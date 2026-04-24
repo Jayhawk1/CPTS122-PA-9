@@ -12,6 +12,7 @@ private:
     float health;
     float moveSpeed;
 public:
+    Enemy();
     Enemy(ColorType c, sf::Vector2f pos);
 
     void update() override; //Default behavior for an entity, should apply to every enemy

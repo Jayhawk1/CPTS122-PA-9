@@ -2,6 +2,9 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pickup.hpp"
+
+#include "Walker.hpp"
+
 #include<iostream>
 
 int main() {
@@ -11,7 +14,7 @@ int main() {
     Player player;
     bool iFrames = false;
 
-    Enemy enemy(BLUE, { 300, 200 });
+    WalkerEnemy enemy(BLUE, { 300, 200 });
 
     Pickup paint(RED, { 700, 500});
 
