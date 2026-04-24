@@ -1,6 +1,13 @@
 #include "Enemy.hpp"
 #include"Color.hpp"
 
+Enemy::Enemy()
+{
+    health = 100;
+    moveSpeed = 0;
+    shape.setRadius(15.f);
+}
+
 Enemy::Enemy(ColorType c, sf::Vector2f pos) {
     color = c;
     health = 100;
@@ -13,7 +20,7 @@ Enemy::Enemy(ColorType c, sf::Vector2f pos) {
 
 void Enemy::update() {
     // for now, enemy doesn't move
-    std::cout << "Default enemy behavior" << std::endl;
+    //std::cout << "Default enemy behavior" << std::endl;
 }
 
 float Enemy::getHealth()
