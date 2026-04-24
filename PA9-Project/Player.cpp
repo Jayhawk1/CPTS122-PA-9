@@ -59,3 +59,5 @@ void Player::takeDamage(ColorType enemyColor) {
     std::cout << "Player Health: " << health << std::endl;
 }
 
+bool Player::alive() { return health > 0; }
+

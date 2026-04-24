@@ -50,9 +50,15 @@ int main() {
         }
 
         window.clear();
-        
-        player.draw(window);
-        enemy.draw(window);
+
+        if (player.alive()) {
+            player.draw(window);
+        }
+
+        if (enemy.alive()) {
+            enemy.draw(window);
+        }
+
         paint.draw(window);
         window.display();
     }

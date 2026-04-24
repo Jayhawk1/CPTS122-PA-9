@@ -17,4 +17,5 @@ public:
     void newColor(ColorType newColor);
     ColorType getCurrentColor();
     void takeDamage(ColorType enemyColor);
+    bool alive();
 };

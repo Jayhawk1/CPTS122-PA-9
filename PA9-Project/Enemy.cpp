@@ -51,3 +51,5 @@ void Enemy::setColor(ColorType nColor)
 {
     this->color = nColor;
 }
+
+bool Enemy::alive() { return health > 0; }

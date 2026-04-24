@@ -25,4 +25,5 @@ public:
 
     ColorType getColor();
     void setColor(ColorType nColor);
+    bool alive();
 };
