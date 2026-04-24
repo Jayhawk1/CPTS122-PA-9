@@ -21,5 +21,9 @@ void Enemy::takeDamage(ColorType bulletColor) {
     float dmg = 10 * getDamageMultiplier(bulletColor, color);
     health -= dmg;
 
-    std::cout << "Enemy health: " << health << std::endl;
+    std::cout << "Enemy Health: " << health << std::endl;
+}
+
+ColorType Enemy::getColor() {
+    return color;
 }

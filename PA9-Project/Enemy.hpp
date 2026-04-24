@@ -14,4 +14,5 @@ public:
 
     void update() override;
     void takeDamage(ColorType bulletColor);
+    ColorType getColor();
 };

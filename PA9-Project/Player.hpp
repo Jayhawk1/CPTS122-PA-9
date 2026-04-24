@@ -7,11 +7,14 @@ class Player : public Entity {
 private:
     ColorType color1, color2;
     bool usingFirst;
+    float health;
 
 public:
     Player();
 
     void update() override;
     void swapColor();
+    void newColor(ColorType newColor);
     ColorType getCurrentColor();
+    void takeDamage(ColorType enemyColor);
 };

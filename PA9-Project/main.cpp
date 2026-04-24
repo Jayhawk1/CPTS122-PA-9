@@ -1,15 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "Enemy.hpp"
+#include "Pickup.hpp"
 #include<iostream>
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode({ 600, 400 }), "Game");
+    sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
     Player player;
+    bool iFrames;
 
     Enemy enemy(BLUE, { 300, 200 });
+
+    Pickup paint(RED, { 700, 500});
 
     while (window.isOpen()) {
 
@@ -24,18 +28,28 @@ int main() {
             }
         }
 
+        if (!player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds())) {
+            iFrames = false;
+        }
+
         player.update();
         enemy.update();
 
-        if (player.getShape().getGlobalBounds().findIntersection(
-            enemy.getShape().getGlobalBounds()))
-        {
+        if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
             std::cout << "Collision detected!" << std::endl;
+            player.takeDamage(enemy.getColor());
+            iFrames = true;
+        }
+
+        if (player.getShape().getGlobalBounds().findIntersection(paint.getShape().getGlobalBounds())) {
+            std::cout << "Collision detected!" << std::endl;
+            player.newColor(paint.getColor());
         }
 
         window.clear();
         player.draw(window);
         enemy.draw(window);
+        paint.draw(window);
         window.display();
     }
 }
