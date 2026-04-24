@@ -35,18 +35,22 @@ int main() {
         player.update();
         enemy.update();
 
+
+        // Enemy collision
         if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
             std::cout << "Collision detected!" << std::endl;
             player.takeDamage(enemy.getColor());
             iFrames = true;
         }
 
+        // Pickup collison
         if (player.getShape().getGlobalBounds().findIntersection(paint.getShape().getGlobalBounds())) {
             std::cout << "Collision detected!" << std::endl;
             player.newColor(paint.getColor());
         }
 
         window.clear();
+        
         player.draw(window);
         enemy.draw(window);
         paint.draw(window);
