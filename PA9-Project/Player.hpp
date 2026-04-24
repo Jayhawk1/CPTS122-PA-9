@@ -3,9 +3,6 @@
 #include "Color.hpp"
 #include "Entity.hpp"
 
-
-
-
 class Player : public Entity {
 private:
     ColorType color1, color2;

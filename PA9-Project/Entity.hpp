@@ -1,9 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#pragma once
-#include <SFML/Graphics.hpp>
-
 class Entity {
 protected:
     sf::CircleShape shape;

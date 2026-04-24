@@ -3,8 +3,6 @@
 #include"Entity.hpp"
 #include"Color.hpp"
 
-
-
 class Bullet : public Entity {
 private:
     sf::Vector2f velocity;

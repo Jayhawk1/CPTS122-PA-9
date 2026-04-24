@@ -18,7 +18,7 @@ void Player::update() {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
         shape.move({ 0, -speed });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
         shape.move({ 0, speed });
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
         shape.move({ -speed, 0 });
