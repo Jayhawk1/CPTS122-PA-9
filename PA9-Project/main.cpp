@@ -2,7 +2,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pickup.hpp"
-#include<iostream>
+#include <iostream>
 
 int main() {
 
@@ -13,7 +13,7 @@ int main() {
 
     Enemy enemy(BLUE, { 300, 200 });
 
-    Pickup paint(RED, { 700, 500});
+    Pickup paint(RED, { 700, 500 });
 
     while (window.isOpen()) {
 
@@ -23,33 +23,48 @@ int main() {
                 window.close();
 
             if (event->is<sf::Event::KeyPressed>()) {
+
                 if (event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::R)
                     player.swapColor();
             }
         }
 
+    
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+            player.projectile(player.getCurrentColor());
+        }
+
+
+
+      
         if (!player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds())) {
             iFrames = false;
         }
 
+   
         player.update();
         enemy.update();
 
+  
         if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
             std::cout << "Collision detected!" << std::endl;
             player.takeDamage(enemy.getColor());
             iFrames = true;
         }
 
+ 
         if (player.getShape().getGlobalBounds().findIntersection(paint.getShape().getGlobalBounds())) {
             std::cout << "Collision detected!" << std::endl;
             player.newColor(paint.getColor());
         }
 
+      
         window.clear();
-        player.draw(window);
+
+        player.draw(window);  
         enemy.draw(window);
         paint.draw(window);
+
         window.display();
     }
 }
