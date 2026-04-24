@@ -9,7 +9,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
     Player player;
-    bool iFrames;
+    bool iFrames = false;
 
     Enemy enemy(BLUE, { 300, 200 });
 
