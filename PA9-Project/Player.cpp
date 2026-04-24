@@ -30,6 +30,17 @@ void Player::update() {
     if (health < 1) {
         // die
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+        lastDirection = { 0.f, -1.f };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+        lastDirection = { 0.f, 1.f };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        lastDirection = { -1.f, 0.f };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        lastDirection = { 1.f, 0.f };
+
+    updateProjectiles();
 }
 
 void Player::swapColor() {
@@ -59,5 +70,64 @@ void Player::takeDamage(ColorType enemyColor) {
     std::cout << "Player Health: " << health << std::endl;
 }
 
+
+
+
+
+
+
+void Player::projectile(ColorType projectilColor) {
+
+    ColorType color;
+
+    if (usingFirst) { color = color1; }
+    else { color = color2; }
+
+    float dmg = 10 * getDamageMultiplier(projectilColor, color);
+
+   
+    Projectile p;
+
+    p.shape.setRadius(5.f);
+    p.shape.setPosition(shape.getPosition());
+    p.shape.setFillColor(toSFMLColor(projectilColor));
+
+
+   
+
+    sf::Vector2f dir = lastDirection;
+
+    if (dir.x == 0.f && dir.y == 0.f)
+        dir = { 1.f, 0.f }; // default direction
+
+    float speed = 0.5f;
+    p.velocity = dir * speed;
+
+    
+
+    p.damage = dmg;
+    p.color = projectilColor;
+
+    projectiles.push_back(p);
+}
+
 bool Player::alive() { return health > 0; }
 
+
+
+void Player::updateProjectiles() {
+
+    for (auto& p : projectiles) {
+        p.shape.move(p.velocity);
+    }
+}
+
+
+
+void Player::draw(sf::RenderWindow& window) {
+    window.draw(shape);
+
+    for (auto& p : projectiles) {
+        window.draw(p.shape);
+    }
+}

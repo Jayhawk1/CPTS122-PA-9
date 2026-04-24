@@ -16,7 +16,7 @@ int main() {
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
 
-    Pickup paint(RED, { 700, 500});
+    Pickup paint(RED, { 700, 500 });
 
     while (window.isOpen()) {
 
@@ -26,11 +26,20 @@ int main() {
                 window.close();
 
             if (event->is<sf::Event::KeyPressed>()) {
+
                 if (event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::R)
                     player.swapColor();
             }
         }
 
+    
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+            player.projectile(player.getCurrentColor());
+        }
+
+
+
+      
         if (!player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds())) {
             iFrames = false;
         }
@@ -52,6 +61,7 @@ int main() {
             player.newColor(paint.getColor());
         }
 
+      
         window.clear();
 
         if (player.alive()) {
@@ -63,6 +73,7 @@ int main() {
         }
 
         paint.draw(window);
+
         window.display();
     }
 }
