@@ -34,23 +34,12 @@ int main() {
             }
         }
 
-    // Shooting
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !shot) {
-            player.projectile(player.getCurrentColor(), { 0.f, -1.f });
-            shot = true;
+    
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+            player.projectile(player.getCurrentColor());
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !shot) {
-            player.projectile(player.getCurrentColor(), { 0.f, 1.f });
-            shot = true;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !shot) {
-            player.projectile(player.getCurrentColor(), { -1.f, 0.f });
-            shot = true;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && !shot) {
-            player.projectile(player.getCurrentColor(), { 1.f, 0.f });
-            shot = true;
-        }
+
+
 
       
         if (!player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds())) {
@@ -68,7 +57,7 @@ int main() {
             iFrames = true;
         }
 
-        // Pickup collision
+        // Pickup collison
         if (player.getShape().getGlobalBounds().findIntersection(paint.getShape().getGlobalBounds())) {
             std::cout << "Collision detected!" << std::endl;
             player.newColor(paint.getColor());

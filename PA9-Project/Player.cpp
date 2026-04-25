@@ -31,6 +31,15 @@ void Player::update() {
         // die
     }
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+        lastDirection = { 0.f, -1.f };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+        lastDirection = { 0.f, 1.f };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        lastDirection = { -1.f, 0.f };
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        lastDirection = { 1.f, 0.f };
+
     updateProjectiles();
 }
 
@@ -67,6 +76,8 @@ void Player::takeDamage(ColorType enemyColor) {
 
 
 
+void Player::projectile(ColorType projectilColor) {
+
 void Player::projectile(ColorType projectilColor, sf::Vector2f dir) {
     ColorType color;
 
@@ -82,8 +93,13 @@ void Player::projectile(ColorType projectilColor, sf::Vector2f dir) {
     playerPos.y = playerPos.y + (shape.getRadius() / 2);
 
     p.shape.setRadius(5.f);
-    p.shape.setPosition(playerPos);
+    p.shape.setPosition(shape.getPosition());
     p.shape.setFillColor(toSFMLColor(projectilColor));
+
+
+   
+
+    sf::Vector2f dir = lastDirection;
 
     if (dir.x == 0.f && dir.y == 0.f)
         dir = { 1.f, 0.f }; // default direction
