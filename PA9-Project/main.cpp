@@ -8,6 +8,7 @@
 #include<iostream>
 
 int main() {
+    EntityList<Entity>* Entities = new EntityList<Entity>;
 
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
