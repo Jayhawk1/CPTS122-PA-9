@@ -22,6 +22,6 @@ public:
     void newColor(ColorType newColor);
     ColorType getCurrentColor();
     void takeDamage(ColorType enemyColor);
-    void projectile(ColorType projectilColor);
+    void projectile(ColorType projectilColor, sf::Vector2f dir);
     bool alive();
 };
