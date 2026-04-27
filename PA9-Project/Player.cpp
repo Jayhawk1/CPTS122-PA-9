@@ -30,6 +30,9 @@ void Player::update() {
     if (health < 1) {
         // die
     }
+
+
+    updateProjectiles();
 }
 
 void Player::swapColor() {
@@ -59,5 +62,58 @@ void Player::takeDamage(ColorType enemyColor) {
     std::cout << "Player Health: " << health << std::endl;
 }
 
+
+
+
+
+
+
+void Player::projectile(ColorType projectilColor, sf::Vector2f dir) {
+
+    float dmg = 10 * getDamageMultiplier(getCurrentColor(), getCurrentColor());
+
+   
+    Projectile p;
+    sf::Vector2f playerPos = shape.getPosition();
+    playerPos.x = playerPos.x + (shape.getRadius() / 2);
+    playerPos.y = playerPos.y + (shape.getRadius() / 2);
+
+    p.shape.setRadius(5.f);
+    p.shape.setPosition(playerPos);
+    p.shape.setFillColor(toSFMLColor(projectilColor));
+
+    if (dir.x == 0.f && dir.y == 0.f)
+        dir = { 1.f, 0.f }; // default direction
+
+    float speed = 0.5f;
+    p.velocity = dir * speed;
+
+    
+
+    p.damage = dmg;
+    p.color = projectilColor;
+
+    projectiles.push_back(p);
+}
+
 bool Player::alive() { return health > 0; }
 
+
+
+void Player::updateProjectiles() {
+
+    for (auto& p : projectiles) {
+        //if(p.shape.getPosition() == enemy position){ delete projectile and damage enemy
+        p.shape.move(p.velocity);
+    }
+}
+
+
+
+void Player::draw(sf::RenderWindow& window) {
+    window.draw(shape);
+
+    for (auto& p : projectiles) {
+        window.draw(p.shape);
+    }
+}

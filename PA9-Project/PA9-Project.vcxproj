@@ -26,6 +26,7 @@
     <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Walker.hpp" />
+    <ClInclude Include="Projectil.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
