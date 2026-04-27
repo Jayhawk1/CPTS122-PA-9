@@ -59,6 +59,11 @@ int main() {
             player.newColor(paint.getColor());
             
         }
+        if (player.getShape().getGlobalBounds().findIntersection(paint1.getShape().getGlobalBounds())) {
+            std::cout << "Collision detected!" << std::endl;
+            player.newColor(paint1.getColor());
+
+        }
 
 
         window.clear();
