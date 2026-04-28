@@ -9,3 +9,4 @@ sf::CircleShape& Entity::getShape() {
 
     return shape;
 }
+

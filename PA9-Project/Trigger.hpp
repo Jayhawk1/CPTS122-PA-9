@@ -20,9 +20,7 @@ public:
 		mColliding = newColliding;
 	}
 
-	void update() override {
-
-	}
+	void update();
 
 
 
