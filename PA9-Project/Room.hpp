@@ -2,8 +2,6 @@
 
 
 class Room {
-protected:
-
 public:
 
 };

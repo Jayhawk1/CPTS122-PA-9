@@ -63,8 +63,6 @@ public:
 
 	virtual bool IsColliding();
 
-	 void update() override {
-
-	}
+	void update();
 };
 

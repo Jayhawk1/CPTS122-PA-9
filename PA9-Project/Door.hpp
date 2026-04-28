@@ -28,11 +28,7 @@ public:
 		mTransitioning = newTransitioning;
 	}
 
-	void startNextLevel() {
-		if (levelTrigger.getIsColliding()) {
-			
-		}
-	}
+	void startNextLevel();
 
 
 };
