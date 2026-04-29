@@ -7,6 +7,6 @@ Jayden Winslow - Lab Section 2
 
 Andrew - Lab Section
 
-Kams - Lab Section
+Kam - Lab Section
 
 Talon - Lab Section 
