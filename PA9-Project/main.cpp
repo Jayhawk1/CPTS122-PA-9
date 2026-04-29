@@ -2,12 +2,14 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pickup.hpp"
+#include "Entity.hpp"
 #include "Room.hpp"
 #include "Walker.hpp"
 
-#include<iostream>
+#include <iostream>
 
 int main() {
+    EntityList<Entity> Entities = EntityList<Entity>();
 
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
@@ -16,6 +18,9 @@ int main() {
     Room testRoom(2, 10, 10, 800, 50, sf::Color::White, sf::Color::White);
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
+
+    Entities.insertEntity(player);
+    Entities.insertEntity(enemy);
 
     Pickup paint(RED, { 700, 500 });
     Pickup paint1(YELLOW, { 200, 600 });
@@ -45,13 +50,22 @@ int main() {
         player.update(enemy); // Current passthrough allows check for Collision
         player.update(testRoom);
         enemy.update();
-        
- 
-    /*
-        if (player.Collision(enemy) && !player.getIFrames()) {
-            player.takeDamage(enemy.getColor());
-            player.setIFrames(true);
-		}
+
+        for (int i = 0; i < Entities.getEntityCount(); i++) {
+            Entities.getEntity(i)->update();
+        }
+
+
+
+
+        /*
+            if (player.Collision(enemy) && !player.getIFrames()) {
+                player.takeDamage(enemy.getColor());
+                player.setIFrames(true);
+            }
+
+
+            */
 
 
         */
