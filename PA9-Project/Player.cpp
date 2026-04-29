@@ -5,25 +5,37 @@
 void Player::update(Enemy& enemy) {
     float speed = 0.2f;
 
+    /*
+        With how collision works in SFML (at least how we do it) the player can glitch through objects if they strafe
+        while pressing against it (ex. holding A/D while holding W against a wall). This is because all we do to simulate "collision"
+        is just reversing the speed applied to the players movement. In order to counteract this, all I did was disable the players ability
+        to move in the direction of anything of an "Obstacle" class. Allowing strafing still allows them to just walk through it.
+        You can still glitch through it by pressing like every key. I will likely impliment a killbox outside the map
+    */
+
       if (!isStunned) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && !isCollidingUp) {
             shape.move({ 0, -speed });
             lastDirection = UP;
+			isCollidingDown = false;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && !isCollidingDown) {
             shape.move({ 0, speed });
             lastDirection = DOWN;
+            isCollidingUp = false;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && !isCollidingLeft) {
             shape.move({ -speed, 0 });
-            lastDirection = LEFT;
+            lastDirection = LEFT;;
+            isCollidingRight = false;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && !isCollidingRight) {
             shape.move({ speed, 0 });
             lastDirection = RIGHT;
+			isCollidingLeft = false;
         }
     }
 
@@ -31,6 +43,14 @@ void Player::update(Enemy& enemy) {
             iFrames = false;
             isStunned = false;
         }
+
+        if (strafeClock.getElapsedTime().asSeconds() >= strafedisableTime) {
+            isCollidingUp = false;
+            isCollidingDown = false;
+            isCollidingLeft = false;
+            isCollidingRight = false;
+		}
+
 
     if (health < 1) {
         // die
@@ -69,6 +89,34 @@ void Player::update(Enemy& enemy) {
 
 
     updateProjectiles(enemy);
+}
+
+
+void Player::update(Room& room) {
+    float speed = 0.2f;
+    if (room.Collision(*this)) {
+		strafeClock.restart();
+
+            switch (lastDirection) {
+            case UP:
+                shape.move({ 0, speed * 2 });
+				isCollidingUp = true;
+                break;
+            case DOWN:
+                shape.move({ 0, -speed * 2 });
+				isCollidingDown = true;
+                break;
+            case LEFT:
+                shape.move({ speed * 2, 0 });
+				isCollidingLeft = true;
+                break;
+            case RIGHT:
+                shape.move({ -speed * 2, 0 });
+				isCollidingRight = true;
+                break;
+            }
+        }
+
 }
 
 void Player::swapColor() {

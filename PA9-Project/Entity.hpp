@@ -1,12 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include"Color.hpp"
 #include <iostream>
 
 class Entity {
 protected:
     sf::CircleShape shape;
     bool iFrames;
-
  
 public:
     virtual void draw(sf::RenderWindow& window);
