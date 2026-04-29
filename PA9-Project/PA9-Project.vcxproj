@@ -25,6 +25,7 @@
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Walker.hpp" />
     <ClInclude Include="Projectil.hpp" />
   </ItemGroup>
   <ItemGroup>
