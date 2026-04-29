@@ -11,7 +11,6 @@ public:
 private:
 	float health = 1600;
 	float moveSpeed = 0.04f;
-	bool imAlreadyDead = false;
 };
 
 
@@ -42,12 +41,11 @@ void SplitterEnemy::update() {
 
 	this->shape.move(this->getVelocity());
 
-	this->health = this->health - 1;
-
 	//this->shape.setPosition(this->shape.getPosition() + this->getVelocity());
 
-	if (this->health < 1 && !imAlreadyDead) {
-		imAlreadyDead = true;
+	this->health = this->health - 1;
+
+	if (this->health < 1) {
 		this->onDeath();
 	}
 	//std::cout << "SplitterEnemy update funct" << std::endl;
