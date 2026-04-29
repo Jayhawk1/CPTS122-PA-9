@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include"Color.hpp"
 #include <iostream>
 
 #include "EntityList.hpp"
@@ -13,6 +12,7 @@ protected:
     int entityNum;
     EntityList<Entity>* parentList;
     bool iFrames;
+
  
 public:
     Entity();

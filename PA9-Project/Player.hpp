@@ -4,7 +4,6 @@
 #include "Entity.hpp"
 #include "Enemy.hpp"
 #include "Bullet.hpp"
-#include "Room.hpp"
 
 
 class Player : public Entity {
@@ -15,15 +14,8 @@ private:
     std::vector<Bullet> projectiles;
     sf::Vector2f playerPos; 
     float stunTime;
-    float strafedisableTime;
-	sf::Clock strafeClock;
     sf::Clock playerStunClock;
     bool isStunned;
-    bool isColliding;
-    bool isCollidingUp;
-    bool isCollidingDown;
-    bool isCollidingLeft;
-    bool isCollidingRight;
 
     enum Directon {
         NILL = 0,
@@ -54,8 +46,6 @@ public:
 
         stunTime = 1.0f;
 
-        strafedisableTime = 0.2f;
-
         isStunned = false;
 
         
@@ -69,7 +59,6 @@ public:
     void draw(sf::RenderWindow& window);
     void updateProjectiles(Enemy& enemy);
     void update(Enemy& enemy);
-    void update(Room& room);
     void swapColor();
     void newColor(ColorType newColor);
     ColorType getCurrentColor();

@@ -2,8 +2,6 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pickup.hpp"
-#include "Room.hpp"
-#include "Entity.hpp"
 
 #include "Walker.hpp"
 
@@ -16,7 +14,6 @@ int main() {
 
     Player player;
     bool shot = false;
-    Room testRoom(2, 10, 10, 800, 50, sf::Color::White, sf::Color::White);
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
 
@@ -48,8 +45,7 @@ int main() {
             iFrames = false;
         }
 
-        player.update(enemy); // Current passthrough allows check for Collision
-        player.update(testRoom);
+        player.update(enemy);
         enemy.update();
         
  
@@ -61,13 +57,11 @@ int main() {
 
 
         */
-
         if(player.Collision(paint)) {
             player.newColor(paint.getColor());
         }
 
-
-
+       // if()
 
 
         window.clear();
@@ -112,8 +106,6 @@ int main() {
 
         paint.draw(window);
         paint1.draw(window);
-
-        testRoom.drawWalls(window);
 
         window.display();
     }
