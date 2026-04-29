@@ -1,9 +1,5 @@
 #include "Entity.hpp"
 
-Entity::Entity() {
-    this->entityNum = -1;
-    this->parentList = nullptr;
-}
 
 void Entity::draw(sf::RenderWindow& window) {
 
@@ -14,6 +10,7 @@ sf::CircleShape& Entity::getShape() {
 
     return shape;
 }
+
 
 Entity* Entity::getNearestEntityOfType(const char* typeName)
 {

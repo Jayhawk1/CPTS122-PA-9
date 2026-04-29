@@ -14,6 +14,13 @@ protected:
     EntityList<Entity>* parentList;
     bool iFrames;
 public:
+
+    /*
+    Entity() {
+        this->entityNum = -1;
+        this->parentList = nullptr;
+    }
+    */
     virtual void draw(sf::RenderWindow& window);
 
     sf::CircleShape& getShape();
@@ -21,6 +28,11 @@ public:
     int getEntityNum() {
         return entityNum;
     }
+
+    void update() {
+
+    }
+
     void setEntityNum(int nNum) {
         this->entityNum = nNum;
     }

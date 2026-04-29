@@ -67,9 +67,6 @@ int main() {
 
             */
 
-
-        */
-
         if(player.Collision(paint)) {
             player.newColor(paint.getColor());
         }

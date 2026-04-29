@@ -13,7 +13,7 @@ void Player::update(Enemy& enemy) {
         You can still glitch through it by pressing like every key. I will likely impliment a killbox outside the map
     */
 
-      if (!isStunned) {
+      //if (!isStunned) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && !isCollidingUp) {
             shape.move({ 0, -speed });
             lastDirection = UP;
@@ -37,11 +37,11 @@ void Player::update(Enemy& enemy) {
             lastDirection = RIGHT;
 			isCollidingLeft = false;
         }
-    }
+   // }
 
         if (playerStunClock.getElapsedTime().asSeconds() >= stunTime) {
             iFrames = false;
-            isStunned = false;
+            //isStunned = false;
         }
 
         if (strafeClock.getElapsedTime().asSeconds() >= strafedisableTime) {
@@ -59,7 +59,7 @@ void Player::update(Enemy& enemy) {
     if (Collision(enemy) && lastDirection == NILL && !iFrames) {
         takeDamage(enemy.getColor());
         iFrames = true;
-        isStunned = true;
+       // isStunned = true;
     }
     else if (Collision(enemy) && lastDirection != NILL) {
         
@@ -67,22 +67,28 @@ void Player::update(Enemy& enemy) {
             takeDamage(enemy.getColor());
             playerStunClock.restart();
             iFrames = true;
-			isStunned = true;
+			//isStunned = true;
         }
+/*                                         Too many movement bugs, teleporting / phasing when damged
         switch (lastDirection) {
         case UP:
-            shape.move({ 0, speed*500 });
+            shape.move({ 0, speed*5 });
+            isCollidingUp = true;
             break;
         case DOWN:
-            shape.move({ 0, -speed*500 });
+            shape.move({ 0, -speed*5 });
+            isCollidingDown = true;
             break;
-        case LEFT:
-            shape.move({ speed*500, 0 });
+        case LEFT:                             /// Knockback handler
+            shape.move({ speed*5, 0 });
+            isCollidingLeft = true;
             break;
         case RIGHT:
-            shape.move({ -speed*500, 0 });
+            shape.move({ -speed*5, 0 });
+            isCollidingRight = true;
             break;
         }
+        */
 	}
 
 

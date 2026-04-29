@@ -14,11 +14,11 @@ private:
     float health;
     std::vector<Bullet> projectiles;
     sf::Vector2f playerPos; 
-    float stunTime;
+    float stunTime; // Now only for iFrames
     float strafedisableTime;
-	sf::Clock strafeClock;
-    sf::Clock playerStunClock;
-    bool isStunned;
+    sf::Clock strafeClock;
+    sf::Clock playerStunClock; // Now for iFrames
+   // bool isStunned;
     bool isColliding;
     bool isCollidingUp;
     bool isCollidingDown;
@@ -56,7 +56,7 @@ public:
 
         strafedisableTime = 0.2f;
 
-        isStunned = false;
+        //isStunned = false;
 
         
     }
@@ -84,11 +84,12 @@ public:
         return playerPos;
 	}
 
+    /*
     void forceStunStop() {
         playerStunClock.stop();
         isStunned = false;
     }
-
+    */
 
     void setPlayerPos(float newX, float newY) {
         playerPos.x = newX;
