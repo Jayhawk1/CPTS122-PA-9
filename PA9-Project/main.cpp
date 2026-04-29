@@ -2,13 +2,14 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pickup.hpp"
+#include "Entity.hpp"
 
 #include "Walker.hpp"
 
-#include<iostream>
+#include <iostream>
 
 int main() {
-    EntityList<Entity>* Entities = new EntityList<Entity>;
+    EntityList<Entity> Entities = EntityList<Entity>();
 
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
@@ -16,6 +17,9 @@ int main() {
     bool iFrames = false;
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
+
+    Entities.insertEntity(player);
+    Entities.insertEntity(enemy);
 
     Pickup paint(RED, { 700, 500});
 
@@ -36,8 +40,10 @@ int main() {
             iFrames = false;
         }
 
-        player.update();
-        enemy.update();
+        //Update every entity in the entity list
+        for (int i = 0; i < Entities.getEntityCount(); i++) {
+            Entities.getEntity(i)->update();
+        }
 
         if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
             std::cout << "Collision detected!" << std::endl;

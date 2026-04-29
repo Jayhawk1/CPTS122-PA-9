@@ -11,6 +11,7 @@ private:
     ColorType color;
     float health;
     float moveSpeed;
+    sf::Vector2f velocity;
 public:
     Enemy();
     Enemy(ColorType c, sf::Vector2f pos);
@@ -23,6 +24,9 @@ public:
 
     void setMoveSpeed(float nSpeed);
     float getMoveSpeed();
+
+    void setVelocity(sf::Vector2f nVel);
+    sf::Vector2f getVelocity();
 
     ColorType getColor();
     void setColor(ColorType nColor);

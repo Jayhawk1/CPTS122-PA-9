@@ -20,5 +20,19 @@ public:
 
     sf::CircleShape& getShape();
 
+    int getEntityNum() {
+        return entityNum;
+    }
+    void setEntityNum(int nNum) {
+        this->entityNum = nNum;
+    }
+
+    void setParentList(EntityList<Entity>* nList) {
+        this->parentList = nList;
+    }
+
+    //Takes typeid(class).name()
+    Entity* getNearestEntityOfType(const char* typeName);
+
     virtual ~Entity() {}
 };
