@@ -12,6 +12,7 @@ Enemy::Enemy(ColorType c, sf::Vector2f pos) {
     color = c;
     health = 100;
     moveSpeed = 0;
+    velocity = sf::Vector2f();
 
     shape.setRadius(15.f);
     shape.setPosition(pos);
@@ -20,6 +21,7 @@ Enemy::Enemy(ColorType c, sf::Vector2f pos) {
 
 void Enemy::update() {
     // for now, enemy doesn't move
+    this->shape.move(this->velocity);
     //std::cout << "Default enemy behavior" << std::endl;
 }
 
@@ -48,6 +50,16 @@ void Enemy::setMoveSpeed(float nSpeed)
 float Enemy::getMoveSpeed()
 {
     return this->moveSpeed;
+}
+
+void Enemy::setVelocity(sf::Vector2f nVel)
+{
+    this->velocity = nVel;
+}
+
+sf::Vector2f Enemy::getVelocity()
+{
+    return this->velocity;
 }
 
 ColorType Enemy::getColor() {
