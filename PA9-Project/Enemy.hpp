@@ -16,6 +16,7 @@ private:
 public:
     Enemy();
     Enemy(ColorType c, sf::Vector2f pos);
+    ~Enemy();
 
     void update() override; //Default behavior for an entity, should apply to every enemy
 

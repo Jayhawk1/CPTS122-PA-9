@@ -41,8 +41,13 @@ void SplitterEnemy::update() {
 
 	this->shape.move(this->getVelocity());
 
+	this->health = this->health - 1;
+
 	//this->shape.setPosition(this->shape.getPosition() + this->getVelocity());
 
+	if (this->health < 1) {
+		this->onDeath();
+	}
 	//std::cout << "SplitterEnemy update funct" << std::endl;
 }
 

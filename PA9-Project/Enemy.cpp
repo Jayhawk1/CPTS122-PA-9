@@ -20,6 +20,12 @@ Enemy::Enemy(ColorType c, sf::Vector2f pos) {
     shape.setFillColor(toSFMLColor(color));
 }
 
+Enemy::~Enemy()
+{
+    this->parentList->removeEntity(this->entityNum);
+    this->parentList = nullptr;
+}
+
 void Enemy::update() {
     // for now, enemy doesn't move
     this->shape.move(this->velocity);
