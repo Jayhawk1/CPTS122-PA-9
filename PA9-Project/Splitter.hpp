@@ -9,7 +9,7 @@ public:
 
 	void onDeath();
 private:
-	float health = 1600;
+	float health = 80;
 	float moveSpeed = 0.04f;
 };
 
