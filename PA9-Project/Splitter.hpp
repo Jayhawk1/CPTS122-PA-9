@@ -9,8 +9,9 @@ public:
 
 	void onDeath();
 private:
-	float health = 80;
+	float health = 1600;
 	float moveSpeed = 0.04f;
+	bool imAlreadyDead = false;
 };
 
 
@@ -45,21 +46,22 @@ void SplitterEnemy::update() {
 
 	//this->shape.setPosition(this->shape.getPosition() + this->getVelocity());
 
-	if (this->health < 1) {
+	if (this->health < 1 && !imAlreadyDead) {
+		imAlreadyDead = true;
 		this->onDeath();
 	}
 	//std::cout << "SplitterEnemy update funct" << std::endl;
 }
 
 void SplitterEnemy::onDeath() {
-	WalkerEnemy walkerLeft(RED, this->shape.getPosition());
-	WalkerEnemy walkerRight(BLUE, this->shape.getPosition());
+	WalkerEnemy* walkerLeft = new WalkerEnemy(RED, this->shape.getPosition());
+	WalkerEnemy* walkerRight = new WalkerEnemy(BLUE, this->shape.getPosition());
 
-	walkerLeft.setVelocity(sf::Vector2f(-0.4f, 0));
-	walkerRight.setVelocity(sf::Vector2f(0.4f, 0));
+	this->parentList->insertEntity(*walkerLeft);
+	this->parentList->insertEntity(*walkerRight);
 
-	this->parentList->insertEntity(walkerLeft);
-	this->parentList->insertEntity(walkerRight);
+	walkerLeft->setVelocity(sf::Vector2f(-30, 0));
+	walkerRight->setVelocity(sf::Vector2f(30, 0));
 
 	this->Enemy::onDeath();
 }

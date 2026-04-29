@@ -21,8 +21,8 @@ public:
 
     sf::CircleShape& getShape();
 
-    int getEntityNum() {
-        return entityNum;
+    int getEntityNum() const {
+        return this->entityNum;
     }
     void setEntityNum(int nNum) {
         this->entityNum = nNum;

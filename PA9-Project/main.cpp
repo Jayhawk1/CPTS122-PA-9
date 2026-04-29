@@ -17,9 +17,9 @@ int main() {
     Player player;
     bool iFrames = false;
 
-    WalkerEnemy enemy(BLUE, { 300, 200 });
+    WalkerEnemy* enemy = new WalkerEnemy(BLUE, { 300, 200 });
 
-    SplitterEnemy splitterEnemy(YELLOW, { 500, 200 });
+    SplitterEnemy* splitterEnemy = new SplitterEnemy(YELLOW, { 500, 200 });
 
     Entities.insertEntity(player);
     Entities.insertEntity(enemy);
@@ -40,7 +40,7 @@ int main() {
             }
         }
 
-        if (!player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds())) {
+        if (!player.getShape().getGlobalBounds().findIntersection(enemy->getShape().getGlobalBounds())) {
             iFrames = false;
         }
 
@@ -52,9 +52,9 @@ int main() {
             }
         }
 
-        if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
+        if (player.getShape().getGlobalBounds().findIntersection(enemy->getShape().getGlobalBounds()) && !iFrames) {
             std::cout << "Collision detected!" << std::endl;
-            player.takeDamage(enemy.getColor());
+            player.takeDamage(enemy->getColor());
             iFrames = true;
         }
 

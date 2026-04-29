@@ -22,7 +22,8 @@ Enemy::Enemy(ColorType c, sf::Vector2f pos) {
 
 Enemy::~Enemy()
 {
-    this->parentList->removeEntity(this->entityNum);
+    std::cout << "REMOVING ENEMY" << this->entityNum << std::endl;
+    this->parentList->removeEntity(*this);
     this->parentList = nullptr;
 }
 
@@ -52,6 +53,10 @@ void Enemy::takeDamage(ColorType bulletColor) {
 void Enemy::onDeath()
 {
     //Any effects or whatever
+    //if (this->parentList != nullptr) {
+    //    this->parentList->removeEntity(this->entityNum);
+    //}
+    //this->~Enemy();
     delete this;
 }
 
