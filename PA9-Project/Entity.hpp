@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include"Color.hpp"
 #include <iostream>
 
 #include "EntityList.hpp"
@@ -11,6 +12,8 @@ protected:
     sf::CircleShape shape;
     int entityNum;
     EntityList<Entity>* parentList;
+    bool iFrames;
+ 
 public:
     Entity();
 
@@ -35,4 +38,20 @@ public:
     Entity* getNearestEntityOfType(const char* typeName);
 
     virtual ~Entity() {}
+
+	template <typename E>
+    bool Collision(E& entity) {
+        if (getShape().getGlobalBounds().findIntersection(entity.getShape().getGlobalBounds())) {
+            std::cout << "Collision detected!" << std::endl;
+            return true;
+        }
+    }
+
+    void setIFrames(bool TF) {
+        iFrames = TF;
+    }
+
+    bool getIFrames() {
+        return iFrames;
+    }
 };

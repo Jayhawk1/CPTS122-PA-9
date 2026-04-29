@@ -2,37 +2,121 @@
 #include <iostream>
 
 
-Player::Player() {
-    shape.setRadius(15.f);
-    shape.setPosition({ 100, 100 });
-
-    color1 = NONE;
-    color2 = NONE;
-    usingFirst = true;
-    health = 100;
-
-
-    shape.setFillColor(toSFMLColor(color1));
-}
-
-void Player::update() {
+void Player::update(Enemy& enemy) {
     float speed = 0.2f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-        shape.move({ 0, -speed });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-        shape.move({ 0, speed });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-        shape.move({ -speed, 0 });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-        shape.move({ speed, 0 });
+    /*
+        With how collision works in SFML (at least how we do it) the player can glitch through objects if they strafe
+        while pressing against it (ex. holding A/D while holding W against a wall). This is because all we do to simulate "collision"
+        is just reversing the speed applied to the players movement. In order to counteract this, all I did was disable the players ability
+        to move in the direction of anything of an "Obstacle" class. Allowing strafing still allows them to just walk through it.
+        You can still glitch through it by pressing like every key. I will likely impliment a killbox outside the map
+    */
+
+      if (!isStunned) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && !isCollidingUp) {
+            shape.move({ 0, -speed });
+            lastDirection = UP;
+			isCollidingDown = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) && !isCollidingDown) {
+            shape.move({ 0, speed });
+            lastDirection = DOWN;
+            isCollidingUp = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && !isCollidingLeft) {
+            shape.move({ -speed, 0 });
+            lastDirection = LEFT;;
+            isCollidingRight = false;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && !isCollidingRight) {
+            shape.move({ speed, 0 });
+            lastDirection = RIGHT;
+			isCollidingLeft = false;
+        }
+    }
+
+        if (playerStunClock.getElapsedTime().asSeconds() >= stunTime) {
+            iFrames = false;
+            isStunned = false;
+        }
+
+        if (strafeClock.getElapsedTime().asSeconds() >= strafedisableTime) {
+            isCollidingUp = false;
+            isCollidingDown = false;
+            isCollidingLeft = false;
+            isCollidingRight = false;
+		}
+
 
     if (health < 1) {
         // die
     }
 
+    if (Collision(enemy) && lastDirection == NILL && !iFrames) {
+        takeDamage(enemy.getColor());
+        iFrames = true;
+        isStunned = true;
+    }
+    else if (Collision(enemy) && lastDirection != NILL) {
+        
+        if (!iFrames) {
+            takeDamage(enemy.getColor());
+            playerStunClock.restart();
+            iFrames = true;
+			isStunned = true;
+        }
+        switch (lastDirection) {
+        case UP:
+            shape.move({ 0, speed*500 });
+            break;
+        case DOWN:
+            shape.move({ 0, -speed*500 });
+            break;
+        case LEFT:
+            shape.move({ speed*500, 0 });
+            break;
+        case RIGHT:
+            shape.move({ -speed*500, 0 });
+            break;
+        }
+	}
 
-    updateProjectiles();
+
+
+
+    updateProjectiles(enemy);
+}
+
+
+void Player::update(Room& room) {
+    float speed = 0.2f;
+    if (room.Collision(*this)) {
+		strafeClock.restart();
+
+            switch (lastDirection) {
+            case UP:
+                shape.move({ 0, speed * 2 });
+				isCollidingUp = true;
+                break;
+            case DOWN:
+                shape.move({ 0, -speed * 2 });
+				isCollidingDown = true;
+                break;
+            case LEFT:
+                shape.move({ speed * 2, 0 });
+				isCollidingLeft = true;
+                break;
+            case RIGHT:
+                shape.move({ -speed * 2, 0 });
+				isCollidingRight = true;
+                break;
+            }
+        }
+
 }
 
 void Player::swapColor() {
@@ -68,43 +152,32 @@ void Player::takeDamage(ColorType enemyColor) {
 
 
 
-void Player::projectile(ColorType projectilColor, sf::Vector2f dir) {
+void Player::projectile(ColorType projectileColor, sf::Vector2f dir, ColorType enemyColor) {
 
-    float dmg = 10 * getDamageMultiplier(getCurrentColor(), getCurrentColor());
-
-   
-    Projectile p;
-    sf::Vector2f playerPos = shape.getPosition();
-    playerPos.x = playerPos.x + (shape.getRadius() / 2);
-    playerPos.y = playerPos.y + (shape.getRadius() / 2);
-
-    p.shape.setRadius(5.f);
-    p.shape.setPosition(playerPos);
-    p.shape.setFillColor(toSFMLColor(projectilColor));
-
-    if (dir.x == 0.f && dir.y == 0.f)
-        dir = { 1.f, 0.f }; // default direction
-
-    float speed = 0.5f;
-    p.velocity = dir * speed;
-
-    
-
-    p.damage = dmg;
-    p.color = projectilColor;
-
-    projectiles.push_back(p);
+    projectiles.emplace_back(Bullet(projectileColor, dir, getCurrentColor(), enemyColor, getPlayerPos()));
 }
+
 
 bool Player::alive() { return health > 0; }
 
 
 
-void Player::updateProjectiles() {
+void Player::updateProjectiles(Enemy& enemy) {
 
-    for (auto& p : projectiles) {
-        //if(p.shape.getPosition() == enemy position){ delete projectile and damage enemy
-        p.shape.move(p.velocity);
+    for (auto& b : projectiles) {
+		
+        b.update();
+
+		for (auto it = projectiles.begin(); it != projectiles.end();) {
+            if (b.Collision(enemy)) {
+                enemy.takeDamage(b.getColor(), b.getDamage());
+                it = projectiles.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+       
     }
 }
 
@@ -113,7 +186,7 @@ void Player::updateProjectiles() {
 void Player::draw(sf::RenderWindow& window) {
     window.draw(shape);
 
-    for (auto& p : projectiles) {
-        window.draw(p.shape);
+    for (auto& b : projectiles) {
+        window.draw(b.getShape());
     }
 }

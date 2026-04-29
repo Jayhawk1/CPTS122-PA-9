@@ -2,6 +2,7 @@
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Pickup.hpp"
+#include "Room.hpp"
 #include "Entity.hpp"
 
 #include "Walker.hpp"
@@ -14,8 +15,8 @@ int main() {
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
     Player player;
-    bool iFrames = false;
     bool shot = false;
+    Room testRoom(2, 10, 10, 800, 50, sf::Color::White, sf::Color::White);
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
 
@@ -47,30 +48,26 @@ int main() {
             iFrames = false;
         }
 
-        //Update every entity in the entity list
-        for (int i = 0; i < Entities.getEntityCount(); i++) {
-            Entities.getEntity(i)->update();
-        }
-
-
-        // Enemy collision
-        if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
-            std::cout << "Collision detected!" << std::endl;
+        player.update(enemy); // Current passthrough allows check for Collision
+        player.update(testRoom);
+        enemy.update();
+        
+ 
+    /*
+        if (player.Collision(enemy) && !player.getIFrames()) {
             player.takeDamage(enemy.getColor());
-            iFrames = true;
-        }
+            player.setIFrames(true);
+		}
 
-        // Pickup collison
-        if (player.getShape().getGlobalBounds().findIntersection(paint.getShape().getGlobalBounds())) {
-            std::cout << "Collision detected!" << std::endl;
+
+        */
+
+        if(player.Collision(paint)) {
             player.newColor(paint.getColor());
-            
         }
-        if (player.getShape().getGlobalBounds().findIntersection(paint1.getShape().getGlobalBounds())) {
-            std::cout << "Collision detected!" << std::endl;
-            player.newColor(paint1.getColor());
 
-        }
+
+
 
 
         window.clear();
@@ -84,36 +81,39 @@ int main() {
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !shot) {
-            player.projectile(player.getCurrentColor(), { 0.f, -1.f });
+ 
+            player.projectile(player.getCurrentColor(), { 0.f, -1.f }, enemy.getColor());
             shot = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !shot) {
-            player.projectile(player.getCurrentColor(), { 0.f, 1.f });
+            player.projectile(player.getCurrentColor(), { 0.f, 1.f }, enemy.getColor());
             shot = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !shot) {
-            player.projectile(player.getCurrentColor(), { -1.f, 0.f });
+            player.projectile(player.getCurrentColor(), { -1.f, 0.f }, enemy.getColor());
             shot = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && !shot) {
-            player.projectile(player.getCurrentColor(), { 1.f, 0.f });
+            player.projectile(player.getCurrentColor(), { 1.f, 0.f },enemy.getColor());
             shot = true;
         }
 
 
         // do not allow a shooting more than once per key press
-        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && 
-            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && 
-            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && 
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) &&
+            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) &&
+            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) &&
             !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
             shot = false;
         }
 
         paint.draw(window);
         paint1.draw(window);
+
+        testRoom.drawWalls(window);
 
         window.display();
     }
