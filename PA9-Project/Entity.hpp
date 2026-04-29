@@ -10,6 +10,7 @@ class Entity {
 protected:
     sf::CircleShape shape;
     int entityNum;
+    bool enabled;
     EntityList<Entity>* parentList;
 public:
     Entity();
@@ -30,6 +31,9 @@ public:
     void setParentList(EntityList<Entity>* nList) {
         this->parentList = nList;
     }
+
+    void setEnabled(bool nVal);
+    bool getEnabled();
 
     //Takes typeid(class).name()
     Entity* getNearestEntityOfType(const char* typeName);

@@ -1,8 +1,9 @@
 #include "Entity.hpp"
 
 Entity::Entity() {
-    this->entityNum = -1;
-    this->parentList = nullptr;
+	enabled = true;
+    entityNum = -1;
+	parentList = nullptr;
 }
 
 void Entity::draw(sf::RenderWindow& window) {
@@ -13,6 +14,16 @@ void Entity::draw(sf::RenderWindow& window) {
 sf::CircleShape& Entity::getShape() {
 
     return shape;
+}
+
+void Entity::setEnabled(bool nVal)
+{
+	this->enabled = nVal;
+}
+
+bool Entity::getEnabled()
+{
+	return this->enabled;
 }
 
 Entity* Entity::getNearestEntityOfType(const char* typeName)

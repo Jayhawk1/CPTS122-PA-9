@@ -5,6 +5,7 @@
 
 #include "Entity.hpp"
 #include "Color.hpp"
+#include "Player.hpp"
 
 class Enemy : public Entity {
 private:
@@ -21,6 +22,8 @@ public:
     float getHealth();
     void setHealth(float nHealth); //Directly set health for whatever purpose
     void takeDamage(ColorType bulletColor);
+
+    void onDeath(); //Should be called on death
 
     void setMoveSpeed(float nSpeed);
     float getMoveSpeed();

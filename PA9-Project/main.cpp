@@ -5,6 +5,7 @@
 #include "Entity.hpp"
 
 #include "Walker.hpp"
+#include "Splitter.hpp"
 
 #include <iostream>
 
@@ -18,8 +19,11 @@ int main() {
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
 
+    SplitterEnemy splitterEnemy(YELLOW, { 500, 200 });
+
     Entities.insertEntity(player);
     Entities.insertEntity(enemy);
+    Entities.insertEntity(splitterEnemy);
 
     Pickup paint(RED, { 700, 500});
 
@@ -42,7 +46,10 @@ int main() {
 
         //Update every entity in the entity list
         for (int i = 0; i < Entities.getEntityCount(); i++) {
-            Entities.getEntity(i)->update();
+            Entity* nEntity = Entities.getEntity(i);
+            if (nEntity->getEnabled()) {
+                nEntity->update();
+            }
         }
 
         if (player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds()) && !iFrames) {
@@ -57,8 +64,13 @@ int main() {
         }
 
         window.clear();
-        player.draw(window);
-        enemy.draw(window);
+
+        //Update every entity in the entity list
+        for (int i = 0; i < Entities.getEntityCount(); i++) {
+            Entity* nEntity = Entities.getEntity(i);
+            nEntity->draw(window);
+        }
+
         paint.draw(window);
         window.display();
     }

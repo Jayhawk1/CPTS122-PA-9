@@ -3,6 +3,7 @@
 
 Enemy::Enemy()
 {
+    color = ColorType::NONE;
     health = 100;
     moveSpeed = 0;
     shape.setRadius(15.f);
@@ -40,6 +41,12 @@ void Enemy::takeDamage(ColorType bulletColor) {
     health -= dmg;
 
     std::cout << "Enemy Health: " << health << std::endl;
+}
+
+void Enemy::onDeath()
+{
+    //Any effects or whatever
+    delete this;
 }
 
 void Enemy::setMoveSpeed(float nSpeed)

@@ -24,6 +24,7 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="EntityList.hpp" />
+    <ClInclude Include="Splitter.hpp" />
     <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Walker.hpp" />
