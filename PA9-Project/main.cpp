@@ -18,7 +18,7 @@ int main() {
     WalkerEnemy enemy(BLUE, { 300, 200 });
 
     Pickup paint(RED, { 700, 500 });
-    Pickup paint1(YELLOW, { 200, 800 });
+    Pickup paint1(YELLOW, { 200, 600 });
 
     while (window.isOpen()) {
 
@@ -106,6 +106,7 @@ int main() {
         }
 
         paint.draw(window);
+        paint1.draw(window);
 
         window.display();
     }
