@@ -7,6 +7,7 @@
 #include "Enemy.hpp"
 #include "Pickup.hpp"
 #include "Entity.hpp"
+
 #include "Walker.hpp"
 #include "GameState.hpp"
 #include <SFML/Audio.hpp>
@@ -80,16 +81,8 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
 
-    // FONT
-    std::filesystem::path fontPath =
-        R"(C:\Users\kamar\Downloads\CPT122\New folder\CPTS122-PA-9\PA9-Project\static\Roboto-Regular.ttf)";
-
-    sf::Font font = loadFontSafely(fontPath);
-
-    if (font.getInfo().family == "") {
-        std::cout << "FAILED FONT LOAD\n";
-        return -1;
-    }
+    Player player;
+    bool shot = false;
 
     // TEXT UI
     sf::Text title(font);
@@ -154,26 +147,32 @@ int main() {
                     }
                 }
             }
-
-            // ---------------- PLAYING ----------------
-            if (state == GameState::Playing && event->is<sf::Event::KeyPressed>()) {
-                auto key = event->getIf<sf::Event::KeyPressed>()->code;
-
-                // RETURN TO MENU (NEW FEATURE)
-                if (key == sf::Keyboard::Key::Escape ||
-                    key == sf::Keyboard::Key::Q)
-                {
-                    state = GameState::Menu;
-                }
-
-                // GAME ACTION
-                if (key == sf::Keyboard::Key::R)
-                    player.swapColor();
-            }
         }
 
-        // ---------------- LOGIC ----------------
-        if (state == GameState::Playing) {
+
+
+
+        if (!player.getShape().getGlobalBounds().findIntersection(enemy.getShape().getGlobalBounds())) {
+            iFrames = false;
+        }
+
+        player.update(enemy);
+        enemy.update();
+        
+ 
+    /*
+        if (player.Collision(enemy) && !player.getIFrames()) {
+            player.takeDamage(enemy.getColor());
+            player.setIFrames(true);
+		}
+
+
+        */
+        if(player.Collision(paint)) {
+            player.newColor(paint.getColor());
+        }
+
+       // if()
 
             for (int i = 0; i < Entities.getEntityCount(); i++)
                 Entities.getEntity(i)->update();
@@ -209,35 +208,34 @@ int main() {
                 shot = true;
             }
 
-            if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) &&
-                !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-            {
-                shot = false;
-            }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !shot) {
+ 
+            player.projectile(player.getCurrentColor(), { 0.f, -1.f }, enemy.getColor());
+            shot = true;
         }
 
-        // ---------------- RENDER ----------------
-        window.clear(sf::Color::Black);
-
-        if (state == GameState::Menu) {
-            selector.setPosition(
-                menuIndex == 0 ?
-                sf::Vector2f(435.f, 310.f) :
-                sf::Vector2f(435.f, 390.f)
-            );
-
-            window.draw(title);
-            window.draw(playText);
-            window.draw(exitText);
-            window.draw(selector);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !shot) {
+            player.projectile(player.getCurrentColor(), { 0.f, 1.f }, enemy.getColor());
+            shot = true;
         }
-        else {
-            if (player.alive()) player.draw(window);
-            if (enemy.alive()) enemy.draw(window);
-            paint.draw(window);
-            paint1.draw(window);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !shot) {
+            player.projectile(player.getCurrentColor(), { -1.f, 0.f }, enemy.getColor());
+            shot = true;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && !shot) {
+            player.projectile(player.getCurrentColor(), { 1.f, 0.f },enemy.getColor());
+            shot = true;
+        }
+
+
+        // do not allow a shooting more than once per key press
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) &&
+            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) &&
+            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) &&
+            !sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) {
+            shot = false;
         }
 
         window.display();

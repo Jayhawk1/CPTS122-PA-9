@@ -2,37 +2,73 @@
 #include <iostream>
 
 
-Player::Player() {
-    shape.setRadius(15.f);
-    shape.setPosition({ 100, 100 });
-
-    color1 = NONE;
-    color2 = NONE;
-    usingFirst = true;
-    health = 100;
-
-
-    shape.setFillColor(toSFMLColor(color1));
-}
-
-void Player::update() {
+void Player::update(Enemy& enemy) {
     float speed = 0.2f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-        shape.move({ 0, -speed });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-        shape.move({ 0, speed });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-        shape.move({ -speed, 0 });
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-        shape.move({ speed, 0 });
+      if (!isStunned) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+            shape.move({ 0, -speed });
+            lastDirection = UP;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+            shape.move({ 0, speed });
+            lastDirection = DOWN;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+            shape.move({ -speed, 0 });
+            lastDirection = LEFT;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+            shape.move({ speed, 0 });
+            lastDirection = RIGHT;
+        }
+    }
+
+        if (playerStunClock.getElapsedTime().asSeconds() >= stunTime) {
+            iFrames = false;
+            isStunned = false;
+        }
 
     if (health < 1) {
         // die
     }
 
+    if (Collision(enemy) && lastDirection == NILL && !iFrames) {
+        takeDamage(enemy.getColor());
+        iFrames = true;
+        isStunned = true;
+    }
+    else if (Collision(enemy) && lastDirection != NILL) {
+        
+        if (!iFrames) {
+            takeDamage(enemy.getColor());
+            playerStunClock.restart();
+            iFrames = true;
+			isStunned = true;
+        }
+        switch (lastDirection) {
+        case UP:
+            shape.move({ 0, speed*500 });
+            break;
+        case DOWN:
+            shape.move({ 0, -speed*500 });
+            break;
+        case LEFT:
+            shape.move({ speed*500, 0 });
+            break;
+        case RIGHT:
+            shape.move({ -speed*500, 0 });
+            break;
+        }
+	}
 
-    updateProjectiles();
+
+
+
+    updateProjectiles(enemy);
 }
 
 void Player::swapColor() {
@@ -68,43 +104,32 @@ void Player::takeDamage(ColorType enemyColor) {
 
 
 
-void Player::projectile(ColorType projectilColor, sf::Vector2f dir) {
+void Player::projectile(ColorType projectileColor, sf::Vector2f dir, ColorType enemyColor) {
 
-    float dmg = 10 * getDamageMultiplier(getCurrentColor(), getCurrentColor());
-
-   
-    Projectile p;
-    sf::Vector2f playerPos = shape.getPosition();
-    playerPos.x = playerPos.x + (shape.getRadius() / 2);
-    playerPos.y = playerPos.y + (shape.getRadius() / 2);
-
-    p.shape.setRadius(5.f);
-    p.shape.setPosition(playerPos);
-    p.shape.setFillColor(toSFMLColor(projectilColor));
-
-    if (dir.x == 0.f && dir.y == 0.f)
-        dir = { 1.f, 0.f }; // default direction
-
-    float speed = 0.5f;
-    p.velocity = dir * speed;
-
-    
-
-    p.damage = dmg;
-    p.color = projectilColor;
-
-    projectiles.push_back(p);
+    projectiles.emplace_back(Bullet(projectileColor, dir, getCurrentColor(), enemyColor, getPlayerPos()));
 }
+
 
 bool Player::alive() { return health > 0; }
 
 
 
-void Player::updateProjectiles() {
+void Player::updateProjectiles(Enemy& enemy) {
 
-    for (auto& p : projectiles) {
-        //if(p.shape.getPosition() == enemy position){ delete projectile and damage enemy
-        p.shape.move(p.velocity);
+    for (auto& b : projectiles) {
+		
+        b.update();
+
+		for (auto it = projectiles.begin(); it != projectiles.end();) {
+            if (b.Collision(enemy)) {
+                enemy.takeDamage(b.getColor(), b.getDamage());
+                it = projectiles.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+       
     }
 }
 
@@ -113,7 +138,7 @@ void Player::updateProjectiles() {
 void Player::draw(sf::RenderWindow& window) {
     window.draw(shape);
 
-    for (auto& p : projectiles) {
-        window.draw(p.shape);
+    for (auto& b : projectiles) {
+        window.draw(b.getShape());
     }
 }

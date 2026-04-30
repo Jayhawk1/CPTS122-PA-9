@@ -21,14 +21,17 @@
   <ItemGroup>
     <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="Color.hpp" />
+    <ClInclude Include="Door.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="EntityList.hpp" />
     <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="Obstacle.hpp" />
     <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Room.hpp" />
+    <ClInclude Include="Trigger.hpp" />
     <ClInclude Include="Walker.hpp" />
-    <ClInclude Include="Projectil.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
