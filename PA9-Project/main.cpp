@@ -70,7 +70,7 @@ int main() {
     // MUSIC
     sf::Music backgroundMusic;
     std::filesystem::path musicPath =
-        R"(C:\Users\kamar\Downloads\CPT122\New folder\CPTS122-PA-9\PA9-Project\audio.ogg)";
+        R"(C:\Users\andre\source\repos\mainrollbackdownload\audio.ogg)";
 
     if (loadMusicSafely(backgroundMusic, musicPath)) {
         backgroundMusic.setLooping(true);
@@ -82,7 +82,7 @@ int main() {
 
     // FONT
     std::filesystem::path fontPath =
-        R"(C:\Users\kamar\Downloads\CPT122\New folder\CPTS122-PA-9\PA9-Project\static\Roboto-Regular.ttf)";
+        R"(C:\Users\andre\source\repos\mainrollbackdownload\PA9-Project\static\Roboto-Regular.ttf)";
 
     sf::Font font = loadFontSafely(fontPath);
 
@@ -191,6 +191,22 @@ int main() {
                 iFrames = false;
             }
 
+            // Pick-Up Collision
+             if (player.getShape().getGlobalBounds()
+                .findIntersection(paint.getShape().getGlobalBounds()))
+            {
+                player.newColor(paint.getColor());
+                player.swapColor();
+                player.swapColor();
+            }
+             if (player.getShape().getGlobalBounds()
+                .findIntersection(paint1.getShape().getGlobalBounds()))
+            {
+                player.newColor(paint1.getColor());
+                player.swapColor();
+                player.swapColor();
+			 }
+
             // SHOOTING
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !shot) {
                 player.projectile(player.getCurrentColor(), { 0.f, -1.f });
@@ -227,11 +243,12 @@ int main() {
                 sf::Vector2f(435.f, 310.f) :
                 sf::Vector2f(435.f, 390.f)
             );
-
+            
             window.draw(title);
             window.draw(playText);
             window.draw(exitText);
             window.draw(selector);
+            
         }
         else {
             if (player.alive()) player.draw(window);
