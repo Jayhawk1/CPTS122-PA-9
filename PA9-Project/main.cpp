@@ -93,10 +93,10 @@ int main() {
 
     // TEXT UI
     sf::Text title(font);
-    title.setString("GAME");
+    title.setString("Welcome to Paint Blaster");
     title.setCharacterSize(80);
     title.setFillColor(sf::Color::White);
-    title.setPosition({ 450.f, 100.f });
+    title.setPosition({ 175.f, 100.f });
 
     sf::Text playText(font);
     playText.setString("Press ENTER - Play");
@@ -163,6 +163,8 @@ int main() {
                 if (key == sf::Keyboard::Key::Escape ||
                     key == sf::Keyboard::Key::Q)
                 {
+                    title.setString("-Paused-");
+                    title.setPosition({ 485.f, 100.f });
                     state = GameState::Menu;
                 }
 
