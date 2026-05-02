@@ -1,11 +1,5 @@
 #include "Entity.hpp"
 
-Entity::Entity() {
-	enabled = true;
-    entityNum = -1;
-	parentList = nullptr;
-}
-
 void Entity::draw(sf::RenderWindow& window) {
 
     window.draw(shape);

@@ -4,7 +4,7 @@ class WalkerEnemy : public Enemy {
 public:
 	WalkerEnemy(ColorType c, sf::Vector2f pos);
 
-	void update() override; //The logic for walker in specific
+	void update(); //The logic for walker in specific
 private:
 	float health = 50;
 	float moveSpeed = 0.07f;

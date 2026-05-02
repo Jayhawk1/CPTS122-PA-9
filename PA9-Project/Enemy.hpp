@@ -18,11 +18,15 @@ public:
     Enemy(ColorType c, sf::Vector2f pos);
     ~Enemy();
 
-    void update() override; //Default behavior for an entity, should apply to every enemy
+    ~Enemy() {
+
+    }
+
+    void update(); //Default behavior for an entity, should apply to every enemy
 
     float getHealth();
     void setHealth(float nHealth); //Directly set health for whatever purpose
-    void takeDamage(ColorType bulletColor);
+    void takeDamage(ColorType bulletColor, float dmg);
 
     void onDeath(); //Should be called on death
 
@@ -34,4 +38,5 @@ public:
 
     ColorType getColor();
     void setColor(ColorType nColor);
+    bool alive();
 };

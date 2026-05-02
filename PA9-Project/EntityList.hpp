@@ -145,7 +145,7 @@ std::ostream& operator<<(std::ostream& lhs, const EntityList<ListType>& rhs) {
 		}
 	}
 	return lhs;
-}
+	}
 
 template<class ListType>
 std::ostream& operator<<(std::ostream& lhs, const EntityList<ListType>* rhs) {

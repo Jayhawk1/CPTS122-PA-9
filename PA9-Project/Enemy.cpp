@@ -43,8 +43,8 @@ void Enemy::setHealth(float nHealth)
     this->health = nHealth;
 }
 
-void Enemy::takeDamage(ColorType bulletColor) {
-    float dmg = 10 * getDamageMultiplier(bulletColor, color);
+void Enemy::takeDamage(ColorType bulletColor, float dmg) {
+    
     health -= dmg;
 
     std::cout << "Enemy Health: " << health << std::endl;
@@ -88,3 +88,6 @@ void Enemy::setColor(ColorType nColor)
 {
     this->color = nColor;
 }
+
+bool Enemy::alive() { return health > 0; }
+
