@@ -11,6 +11,7 @@
 #include "Walker.hpp"
 #include "GameState.hpp"
 #include <SFML/Audio.hpp>
+#include "Splitter.hpp"
 
 // ---------------- FONT LOADING ----------------
 std::vector<char> fontBuffer;
@@ -132,11 +133,13 @@ int main() {
     // Obstacle(int mShape, float posX, float posY, float sizeX, float sizeY, sf::Color outline, sf::Color fill)
     Room testRoom;
 
-    Entities.insertEntity(player);
-    Entities.insertEntity(enemy);
+    WalkerEnemy* enemy = new WalkerEnemy(BLUE, { 300, 200 });
+
+    SplitterEnemy* splitterEnemy = new SplitterEnemy(YELLOW, { 500, 200 });
 
     Entities.insertEntity(player);
     Entities.insertEntity(enemy);
+    Entities.insertEntity(splitterEnemy);
 
     bool iFrames = false;
     bool shot = false;

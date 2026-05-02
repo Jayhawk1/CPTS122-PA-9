@@ -13,7 +13,11 @@ protected:
     int entityNum;
     EntityList<Entity>* parentList;
     bool iFrames;
+    int entityNum;
+    bool enabled;
+    EntityList<Entity>* parentList;
 public:
+    virtual void update() = 0; 
 
     /*
     Entity() {
@@ -40,6 +44,23 @@ public:
     void setParentList(EntityList<Entity>* nList) {
         this->parentList = nList;
     }
+
+    //Takes typeid(class).name()
+    Entity* getNearestEntityOfType(const char* typeName);
+
+    int getEntityNum() const {
+        return this->entityNum;
+    }
+    void setEntityNum(int nNum) {
+        this->entityNum = nNum;
+    }
+
+    void setParentList(EntityList<Entity>* nList) {
+        this->parentList = nList;
+    }
+
+    void setEnabled(bool nVal);
+    bool getEnabled();
 
     //Takes typeid(class).name()
     Entity* getNearestEntityOfType(const char* typeName);

@@ -5,6 +5,7 @@
 
 #include "Entity.hpp"
 #include "Color.hpp"
+#include "Player.hpp"
 
 class Enemy : public Entity {
 private:
@@ -15,16 +16,15 @@ private:
 public:
     Enemy();
     Enemy(ColorType c, sf::Vector2f pos);
-
-    ~Enemy() {
-
-    }
+    ~Enemy();
 
     void update(); //Default behavior for an entity, should apply to every enemy
 
     float getHealth();
     void setHealth(float nHealth); //Directly set health for whatever purpose
     void takeDamage(ColorType bulletColor, float dmg);
+
+    void onDeath(); //Should be called on death
 
     void setMoveSpeed(float nSpeed);
     float getMoveSpeed();

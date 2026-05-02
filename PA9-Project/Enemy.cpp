@@ -3,6 +3,7 @@
 
 Enemy::Enemy()
 {
+    color = ColorType::NONE;
     health = 100;
     moveSpeed = 0;
     shape.setRadius(15.f);
@@ -17,6 +18,13 @@ Enemy::Enemy(ColorType c, sf::Vector2f pos) {
     shape.setRadius(15.f);
     shape.setPosition(pos);
     shape.setFillColor(toSFMLColor(color));
+}
+
+Enemy::~Enemy()
+{
+    std::cout << "REMOVING ENEMY" << this->entityNum << std::endl;
+    this->parentList->removeEntity(*this);
+    this->parentList = nullptr;
 }
 
 void Enemy::update() {
@@ -40,6 +48,16 @@ void Enemy::takeDamage(ColorType bulletColor, float dmg) {
     health -= dmg;
 
     std::cout << "Enemy Health: " << health << std::endl;
+}
+
+void Enemy::onDeath()
+{
+    //Any effects or whatever
+    //if (this->parentList != nullptr) {
+    //    this->parentList->removeEntity(this->entityNum);
+    //}
+    //this->~Enemy();
+    delete this;
 }
 
 void Enemy::setMoveSpeed(float nSpeed)
