@@ -8,6 +8,7 @@ class Enemy;
 class Room;
 class Obstacle;
 class Pickup;
+class Door;
 
 
 class Player : public Entity {
@@ -38,7 +39,7 @@ private:
     };
 
     int lastDirection;
-
+    bool isAlive;
 public:
 
     Player() {
@@ -78,6 +79,7 @@ public:
     void update(std::vector<Obstacle>& obstacles);
     void updateProjectiles(EntityList<Enemy>& enemies);
     void update(Pickup& pickup);
+    void update(Door& nxtDoor);
     void swapColor();
     void newColor(ColorType newColor);
     ColorType getCurrentColor();
@@ -99,9 +101,18 @@ public:
     }
     */
 
+    bool& getIsAlive() {
+        return isAlive;
+    }
+
+    void setIsAlive(bool tf) {
+        isAlive = tf;
+    }
+
     void setPlayerPos(float newX, float newY) {
         playerPos.x = newX;
         playerPos.y = newY;
+        shape.setPosition({ newX, newY });
     }
    
     std::vector<Bullet>& getProjectiles() {

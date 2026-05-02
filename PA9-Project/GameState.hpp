@@ -2,5 +2,6 @@
 enum class GameState {
 	Menu,
 	Playing,
-	Exit
+	Exit,
+	Over
 };

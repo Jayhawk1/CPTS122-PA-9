@@ -1,5 +1,7 @@
+#pragma once
 #include "Player.hpp"
 #include "Enemy.hpp"
+#include "Door.hpp"
 #include "Room.hpp"
 #include "Obstacle.hpp"
 #include "Pickup.hpp"
@@ -57,7 +59,7 @@ void Player::update(Enemy *enemy) {
 
 
     if (health < 1) {
-        // die
+        setIsAlive(false);
     }
 
     if (CollisionP(enemy) && lastDirection == NILL && !iFrames) {
@@ -163,6 +165,19 @@ void Player::update(std::vector<Obstacle>& obstacles) {
     updateProjectiles(obstacles);
 
 }
+
+void Player::update(Door& nxtDoor) {
+    float speed = 0.2f;
+
+        if (nxtDoor.Collision(*this) && nxtDoor.getIsOpen()) {
+            nxtDoor.setIsColliding(true);
+            std::cout << "Door Collision" << std::endl;
+        }
+        else {
+            return;
+        }
+    }
+
 
 void Player::update(Pickup& pickup) {
     if (Collision(pickup)) {

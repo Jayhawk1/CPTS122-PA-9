@@ -50,6 +50,7 @@ void Enemy::takeDamage(ColorType bulletColor, float dmg) {
         this->kill();
         std::cout << "Enemy health reached 0. Alive status: " << getIsAlive() << std::endl;
         std::cout << "Enemy Health: " << health << std::endl;
+        this->setAlive(false);
     }
 }
 
@@ -60,7 +61,8 @@ void Enemy::onDeath()
     //    this->parentList->removeEntity(this->entityNum);
     //}
     //this->~Enemy();
-    delete this;
+    isalive = false;
+    //delete this;
 }
 
 void Enemy::setMoveSpeed(float nSpeed)

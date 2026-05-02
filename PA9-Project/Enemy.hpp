@@ -15,6 +15,7 @@ private:
     float moveSpeed;
     sf::Vector2f velocity;
     sf::CircleShape shape;
+    bool isalive;
 public:
     Enemy();
     Enemy(ColorType c, sf::Vector2f pos);
@@ -31,19 +32,30 @@ public:
 
     void setMoveSpeed(float nSpeed);
     float getMoveSpeed();
+    bool alive();
 
+    void setAlive(bool tf) {
+        isalive = tf;
+    }
 
     ColorType getColor();
     void setColor(ColorType nColor);
-    bool alive();
 
     sf::Vector2f getVelocity() {
         return velocity;
     }
 
+    void setEnemyPos(float newX, float newY) {
+        shape.setPosition({ newX, newY });
+    }
+
     void setVelocity(float dirx, float diry) {
         velocity.x = dirx;
         velocity.y = diry;
+    }
+
+    bool isAlive()& {
+        return isalive;
     }
 
     sf::Shape& getShape() override {

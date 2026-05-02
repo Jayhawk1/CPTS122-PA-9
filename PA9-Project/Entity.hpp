@@ -87,6 +87,17 @@ public:
             r1.position.y + r1.size.y > r2.position.y);
     }
 
+    template <typename E>
+    bool CCollision(const E& entity) const { // <--- Added 'const' to parameter AND function
+        sf::FloatRect r1 = getShape().getGlobalBounds();
+        sf::FloatRect r2 = entity.getShape().getGlobalBounds();
+
+        return (r1.position.x < r2.position.x + r2.size.x &&
+            r1.position.x + r1.size.x > r2.position.x &&
+            r1.position.y < r2.position.y + r2.size.y &&
+            r1.position.y + r1.size.y > r2.position.y);
+    }
+
     void setIFrames(bool TF) {
         iFrames = TF;
     }

@@ -13,6 +13,9 @@
 #include "GameState.hpp"
 #include <SFML/Audio.hpp>
 #include "Splitter.hpp"
+#include "Logic.cpp"
+#include <string>
+
 
 // ---------------- FONT LOADING ----------------
 std::vector<char> fontBuffer;
@@ -70,6 +73,7 @@ bool loadMusicSafely(sf::Music& music, const std::filesystem::path& path) {
 // ---------------- MAIN ----------------
 int main() {
 	EntityList<Entity> Entities = EntityList<Entity>();
+	srand(time(NULL));
 
 	// MUSIC
 	sf::Music backgroundMusic;
@@ -137,14 +141,14 @@ int main() {
 	bool shot = false;
 	//WalkerEnemy enemy(BLUE, { 300, 200 });
 	// Obstacle(int mShape, float posX, float posY, float sizeX, float sizeY, sf::Color outline, sf::Color fill)
-	Room CurRoom(ROOM1);
+	Room CurRoom;
 
 	WalkerEnemy* enemy = new WalkerEnemy(BLUE, { 300, 200 });
 
 	SplitterEnemy* splitterEnemy = new SplitterEnemy(YELLOW, { 500, 200 });
 
 	Entities.insertEntity(player);
-	Entities.insertEntity(enemy);
+	
 	Entities.insertEntity(splitterEnemy);
 
 	bool iFrames = false;;
@@ -204,6 +208,54 @@ int main() {
 
 		// ---------------- LOGIC ----------------
 		if (state == GameState::Playing) {
+
+			if (CurRoom.getClearedRooms() == 0 && CurRoom.getFirstRoom()) {
+				CurRoom.deleteRoom();
+				CurRoom = spinRoom();
+				CurRoom.setfirstRoom(false);
+			}
+
+			if (CurRoom.getNextDoor().getIsColliding()) {
+				CurRoom.deleteRoom();
+				CurRoom = spinRoom();
+				CurRoom.setClearedRooms(1);
+				CurRoom.getNextDoor().setIsOpen(false);
+			}
+
+			if (CurRoom.getRoomNum() == ROOM1 && CurRoom.getEntered()) {
+				player.setPlayerPos(20.f, 400.f);
+				CurRoom.setEntered(false);
+				enemy = new WalkerEnemy(spinColor(), {1100.f, 400.f});
+				Entities.insertEntity(enemy);
+				enemy->setAlive(true);
+				enemy->setEnemyPos(1100.f, 400.f);
+			}
+			else if ((CurRoom.getRoomNum() == ROOM2 && CurRoom.getEntered())) {
+				player.setPlayerPos(20.f, 400.f);
+				CurRoom.setEntered(false);
+				enemy = new WalkerEnemy(spinColor(), { 1100.f, 400.f });
+				Entities.insertEntity(enemy);
+				enemy->setAlive(true);
+				enemy->setEnemyPos(1200.f, 400.f);
+
+			}
+			else if ((CurRoom.getRoomNum() == ROOM3 && CurRoom.getEntered())) {
+				player.setPlayerPos(650.f, 650.f);
+				CurRoom.setEntered(false);
+				enemy->setHealth(0);
+				CurRoom.getNextDoor().setIsOpen(true);
+			}
+			else if ((CurRoom.getRoomNum() == ROOM4 && CurRoom.getEntered())) {
+				player.setPlayerPos(20.f, 350.f);
+				CurRoom.setEntered(false);
+				enemy = new WalkerEnemy(spinColor(), { 1100.f, 400.f });
+				Entities.insertEntity(enemy);
+				enemy->setAlive(true);
+				enemy->setEnemyPos(1200.f, 200.f);
+			}
+
+
+
 			for (int i = 0; i < Entities.getEntityCount(); i++)
 				Entities.getEntity(i)->update();
 
@@ -213,11 +265,13 @@ int main() {
 
 
 			player.update(CurRoom.getObstacles());
-
+			CurRoom.update(*enemy);
 
 			player.update(enemy);
 			player.update(CurRoom);
+			player.update(CurRoom.getNextDoor());
 			enemy->update();
+			//splitterEnemy->update();
 			// Inside your main game loop update:
 			for (int i = 0; i < Entities.getEntityCount(); i++) {
 				if (enemy == nullptr) {
@@ -314,7 +368,6 @@ int main() {
 			if (player.alive()) {
 				player.draw(window);
 			}
-
 			if (enemy->alive()) {
 				enemy->draw(window);
 			}
@@ -353,7 +406,44 @@ int main() {
 		// ---------------- RENDER ----------------
 		window.clear(sf::Color::Black);
 
-		if (state == GameState::Menu) {
+		if (!player.alive()) {
+			state = GameState::Over;
+		}
+
+		if (state == GameState::Over) {
+
+			
+			title.setString("Game Over!");
+			title.setCharacterSize(80);
+			title.setFillColor(sf::Color::White);
+			title.setPosition({ 500.f, 100.f });
+
+			/*
+			playText.setString("Rooms Cleared:");
+			playText.setCharacterSize(40);
+			playText.setFillColor(sf::Color::White);
+			playText.setPosition({ 560.f, 305.f });
+
+			
+			SFML REFUSES TO DISPLAY!!!
+			exitText.setString(std::to_string(CurRoom.getClearedRooms()));
+			exitText.setCharacterSize(40);
+			exitText.setFillColor(sf::Color::White);
+			exitText.setPosition({ 560.f, 385.f });
+			*/
+			
+			infoText.setString("Restart by reopening the game!");
+			infoText.setCharacterSize(40);
+			infoText.setFillColor(sf::Color::White);
+			infoText.setPosition({ 415.f, 500.f });
+			window.draw(title);
+			window.draw(infoText);
+
+
+			CurRoom.deleteRoom();
+		}
+
+		else if (state == GameState::Menu) {
 			selector.setPosition(
 				menuIndex == 0 ?
 				sf::Vector2f(435.f, 310.f) :

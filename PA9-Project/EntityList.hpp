@@ -71,6 +71,7 @@ void EntityList<ListType>::insertEntity(ListType& nEntity)
 	this->entityCount = ++(this->entityCount);
 	nEntity.setEntityNum(this->entityCount);
 
+
 	this->entities[this->entityCount - 1] = &nEntity;
 
 	nEntity.setParentList(this);
@@ -81,6 +82,7 @@ void EntityList<ListType>::insertEntity(ListType& nEntity)
 template<class ListType>
 void EntityList<ListType>::insertEntity(ListType* nEntity) {
 	this->insertEntity(*nEntity);
+   
 }
 
 template<class ListType>

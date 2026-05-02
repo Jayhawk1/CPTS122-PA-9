@@ -5,6 +5,7 @@
 #include "Color.hpp"
 #include "RoomEnum.hpp"
 #include "Walker.hpp"
+#include "Logic.hpp"
 
 class Room {
 protected:
@@ -12,6 +13,8 @@ protected:
 	Obstacle SWall;
 	Obstacle EWall;
 	Obstacle WWall;
+	Door nextDoor;
+	Door lastDoor;
 	//EntityList<Entity> Entities;
 	//EntityList<Obstacle> obstacles;
 	//EntityList<Pickup> Entities;
@@ -20,7 +23,11 @@ protected:
 	std::vector<WalkerEnemy> Walkers;
 	std::vector<Obstacle> obstacles;
 	std::vector<Pickup> paint;
-
+	std::vector<Door> doors;
+	int clearedRooms = 0;
+	bool firstRoom = true;
+	RoomEnum RoomNum;
+	bool entered = true;
 
 
 
@@ -46,6 +53,13 @@ public:
 		return paint;
 	}
 
+	Door getLastDoor()& {
+		return lastDoor;
+	}
+
+	Door& getNextDoor() {
+		return nextDoor;
+	}
 
 
 	// Obstacle(int mShape, float posX, float posY, float sizeX, float sizeY, sf::Color outline, sf::Color fill)
@@ -62,12 +76,14 @@ public:
 		Walkers.clear();
 		obstacles.clear();
 		paint.clear();
+		doors.clear();
 
 		Entities.shrink_to_fit();
 		Enemies.shrink_to_fit();
 		Walkers.shrink_to_fit();
 		obstacles.shrink_to_fit();
 		paint.shrink_to_fit();
+		doors.shrink_to_fit();
 	}
 
 	Room(RoomEnum roomType) {
@@ -123,6 +139,39 @@ public:
 
 	}
 
+	RoomEnum getRoomNum()& {
+		return RoomNum;
+	}
+
+	void setRoomNum(RoomEnum NEWROOM) {
+		RoomNum = NEWROOM;
+	}
+
+	int getClearedRooms()& {
+		return clearedRooms;
+	}
+
+	void setClearedRooms(int num )& {
+		clearedRooms += num;
+	}
+
+	bool getFirstRoom()& {
+		return firstRoom;
+	}
+
+	void setfirstRoom(bool nFirstRoom) {
+		firstRoom = nFirstRoom;
+	}
+
+	bool getEntered()& {
+		return entered;
+	}
+
+	void setEntered(bool nEntered) {
+		entered = nEntered;
+	}
+
+
 	Obstacle getNWall() {
 		return NWall;
 	}
@@ -168,6 +217,13 @@ public:
 			}
 		}
 		return false;
+	}
+
+	void update(Enemy& e) {
+		if (!e.isAlive()) {
+			nextDoor.setIsOpen(true);
+			nextDoor.setFill(toSFMLColor(CYAN));
+		}
 	}
 
 };
