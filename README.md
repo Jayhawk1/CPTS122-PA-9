@@ -3,8 +3,7 @@
 Rouge-like dungeon crawler, shoot paint to subdue enemies, painting enemies with a color they are not deals extra damage. move on top of stationary pickups to change your current color
 
 Project Link:
-https://github.com/Jayhawk1/CPTS122-PA-9.git (use branch main-rollback)
-
+https://github.com/Jayhawk1/CPTS122-PA-9.git
 Controls:
 - move using W, A, S, and D
 - shoot paint using the arrow keys
