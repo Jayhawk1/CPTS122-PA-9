@@ -48,6 +48,13 @@
     <ClCompile Include="Splitter.cpp" />
     <ClCompile Include="Walker.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
+    <None Include="audio.ogg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="static\Roboto-Regular.ttf" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
