@@ -5,8 +5,8 @@ Rouge-like dungeon crawler
 By:
 Jayden Winslow - Lab Section 2
 
-Andrew - Lab Section
+Andrew - Lab Section 12
 
-Kam - Lab Section
+Kam - Lab Section 12
 
-Talon - Lab Section 
+Veli - Lab Section 
