@@ -44,7 +44,7 @@ void Enemy::setHealth(float nHealth)
 }
 
 void Enemy::takeDamage(ColorType bulletColor, float dmg) {
-    
+
     health -= dmg;
 
     std::cout << "Enemy Health: " << health << std::endl;

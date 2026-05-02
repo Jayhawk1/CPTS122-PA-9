@@ -73,7 +73,7 @@ int main() {
     // MUSIC
     sf::Music backgroundMusic;
     std::filesystem::path musicPath =
-        R"(C:\Users\andre\source\repos\mainrollbackdownload\audio.ogg)";
+        R"(.\audio.ogg)";
 
     if (loadMusicSafely(backgroundMusic, musicPath)) {
         backgroundMusic.setLooping(true);
@@ -85,7 +85,7 @@ int main() {
 
     // FONT
     std::filesystem::path fontPath =
-        R"(C:\Users\andre\source\repos\mainrollbackdownload\PA9-Project\static\Roboto-Regular.ttf)";
+        R"(.\static\Roboto-Regular.ttf)";
 
     sf::Font font = loadFontSafely(fontPath);
 
@@ -102,16 +102,22 @@ int main() {
     title.setPosition({ 175.f, 100.f });
 
     sf::Text playText(font);
-    playText.setString("Press ENTER - Play");
+    playText.setString("Play");
     playText.setCharacterSize(40);
     playText.setFillColor(sf::Color::White);
     playText.setPosition({ 450.f, 300.f });
 
     sf::Text exitText(font);
-    exitText.setString("Press ENTER - Exit");
+    exitText.setString("Exit");
     exitText.setCharacterSize(40);
     exitText.setFillColor(sf::Color::White);
     exitText.setPosition({ 450.f, 400.f });
+
+    sf::Text infoText(font);
+    infoText.setString("Press ENTER to Select");
+    infoText.setCharacterSize(40);
+    infoText.setFillColor(sf::Color::White);
+    infoText.setPosition({ 450.f, 500.f });
 
     // SELECTOR
     sf::RectangleShape selector({ 400.f, 60.f });
@@ -123,13 +129,12 @@ int main() {
     GameState state = GameState::Menu;
 
     // GAME OBJECTS
-    EntityList<Entity> Entities;
     Player player;
 
     Pickup paint(RED, { 700, 500 });
     Pickup paint1(YELLOW, { 200, 600 });
     bool shot = false;
-    WalkerEnemy enemy(BLUE, { 300, 200 });
+    //WalkerEnemy enemy(BLUE, { 300, 200 });
     // Obstacle(int mShape, float posX, float posY, float sizeX, float sizeY, sf::Color outline, sf::Color fill)
     Room testRoom;
 
@@ -141,8 +146,7 @@ int main() {
     Entities.insertEntity(enemy);
     Entities.insertEntity(splitterEnemy);
 
-    bool iFrames = false;
-    bool shot = false;
+    bool iFrames = false;;
 
     // ---------------- GAME LOOP ----------------
     while (window.isOpen()) {
@@ -191,11 +195,7 @@ int main() {
         }
 
 
-        player.update(enemy); // Current passthrough allows check for Collision
-        player.update(testRoom);
-        player.update(paint);
-		player.update(paint1);
-        enemy.update();
+         // Current passthrough allows check for Collision
 
         for (int i = 0; i < Entities.getEntityCount(); i++) {
             Entities.getEntity(i)->update();
@@ -207,8 +207,8 @@ int main() {
             for (int i = 0; i < Entities.getEntityCount(); i++)
                 Entities.getEntity(i)->update();
 
-            player.update();
-            enemy.update();
+            player.update(enemy);
+            //enemy.update();
         }
 
             for (int i = 0; i < Entities.getEntityCount(); i++)
@@ -266,29 +266,29 @@ int main() {
             player.draw(window);
         }
 
-        if (enemy.alive()) {
-            enemy.draw(window);
+        if (enemy->alive()) {
+            enemy->draw(window);
         }
 
         // SHOOTING
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !shot) {
  
-            player.projectile(player.getCurrentColor(), { 0.f, -1.f }, enemy.getColor());
+            player.projectile(player.getCurrentColor(), { 0.f, -1.f }, enemy->getColor());
             shot = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !shot) {
-            player.projectile(player.getCurrentColor(), { 0.f, 1.f }, enemy.getColor());
+            player.projectile(player.getCurrentColor(), { 0.f, 1.f }, enemy->getColor());
             shot = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !shot) {
-            player.projectile(player.getCurrentColor(), { -1.f, 0.f }, enemy.getColor());
+            player.projectile(player.getCurrentColor(), { -1.f, 0.f }, enemy->getColor());
             shot = true;
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && !shot) {
-            player.projectile(player.getCurrentColor(), { 1.f, 0.f },enemy.getColor());
+            player.projectile(player.getCurrentColor(), { 1.f, 0.f },enemy->getColor());
             shot = true;
         }
 
@@ -319,7 +319,7 @@ int main() {
         }
         else {
             if (player.alive()) player.draw(window);
-            if (enemy.alive()) enemy.draw(window);
+            if (enemy->alive()) enemy->draw(window);
             paint.draw(window);
             paint1.draw(window);
         }

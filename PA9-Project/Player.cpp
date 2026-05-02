@@ -1,8 +1,12 @@
 #include "Player.hpp"
+#include "Enemy.hpp"
+#include "Room.hpp"
+#include "Obstacle.hpp"
+#include "Pickup.hpp"
 #include <iostream>
 
 
-void Player::update(Enemy& enemy) {
+void Player::update(Enemy *enemy) {
     float speed = 0.2f;
 
     /*
@@ -56,16 +60,16 @@ void Player::update(Enemy& enemy) {
         // die
     }
 
-    if (Collision(enemy) && lastDirection == NILL && !iFrames) {
-        takeDamage(enemy.getColor());
+    if (CollisionP(enemy) && lastDirection == NILL && !iFrames) {
+        takeDamage(enemy->getColor());
         playerStunClock.restart();
         iFrames = true;
        // isStunned = true;
     }
-    else if (Collision(enemy) && lastDirection != NILL) {
+    else if (CollisionP(enemy) && lastDirection != NILL) {
         
         if (!iFrames) {
-            takeDamage(enemy.getColor());
+            takeDamage(enemy->getColor());
             playerStunClock.restart();
             iFrames = true;
 			//isStunned = true;
@@ -176,15 +180,15 @@ bool Player::alive() { return health > 0; }
 
 
 
-void Player::updateProjectiles(Enemy& enemy) {
+void Player::updateProjectiles(Enemy* enemy) {
 
     for (auto& b : projectiles) {
 		
         b.update();
 
 		for (auto it = projectiles.begin(); it != projectiles.end();) {
-            if (b.Collision(enemy)) {
-                enemy.takeDamage(b.getColor(), b.getDamage());
+            if (b.CollisionP(enemy)) {
+                enemy->takeDamage(b.getColor(), b.getDamage());
                 it = projectiles.erase(it);
             }
             else {

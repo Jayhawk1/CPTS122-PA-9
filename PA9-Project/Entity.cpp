@@ -2,22 +2,12 @@
 
 void Entity::draw(sf::RenderWindow& window) {
 
-    window.draw(shape);
+	window.draw(shape);
 }
 
 sf::CircleShape& Entity::getShape() {
 
-    return shape;
-}
-
-void Entity::setEnabled(bool nVal)
-{
-	this->enabled = nVal;
-}
-
-bool Entity::getEnabled()
-{
-	return this->enabled;
+	return shape;
 }
 
 Entity* Entity::getNearestEntityOfType(const char* typeName)
@@ -44,5 +34,6 @@ Entity* Entity::getNearestEntityOfType(const char* typeName)
 
 		return nearestEntity;
 	}
-    return nullptr;
+	return nullptr;
 }
+

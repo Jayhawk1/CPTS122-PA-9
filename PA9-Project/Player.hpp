@@ -2,9 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "Color.hpp"
 #include "Entity.hpp"
-#include "Enemy.hpp"
 #include "Bullet.hpp"
-#include "Room.hpp"
+
+class Enemy;
+class Room;
+class Obstacle;
+class Pickup;
 
 
 class Player : public Entity {
@@ -67,9 +70,9 @@ public:
 
 
     void draw(sf::RenderWindow& window);
-    void updateProjectiles(Enemy& enemy);
+    void updateProjectiles(Enemy* enemy);
     void updateProjectiles(Obstacle& obstacle);
-    void update(Enemy& enemy);
+    void update(Enemy* enemy);
     void update(Room& room);
     void update(Pickup& pickup);
     void swapColor();

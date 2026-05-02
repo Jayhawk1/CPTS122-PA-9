@@ -1,3 +1,4 @@
+#pragma once
 #include "Enemy.hpp"
 //#include "Walker.hpp"
 
@@ -5,7 +6,7 @@ class SplitterEnemy : public Enemy {
 public:
 	SplitterEnemy(ColorType c, sf::Vector2f pos);
 
-	void update() override; //The logic for Splitter in specific
+	void update(); //The logic for Splitter in specific
 
 	void onDeath();
 private:

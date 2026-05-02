@@ -3,8 +3,8 @@
 #include "Door.hpp"
 #include "Pickup.hpp"
 #include "Color.hpp"
-
-
+#include "RoomEnum.hpp"
+#include "Walker.hpp"
 
 class Room {
 protected:
@@ -12,8 +12,39 @@ protected:
 	Obstacle SWall;
 	Obstacle EWall;
 	Obstacle WWall;
+	//EntityList<Entity> Entities;
+	//EntityList<Obstacle> obstacles;
+	//EntityList<Pickup> Entities;
+	std::vector<Entity> Entities;
+	std::vector<Enemy> Enemies;
+	std::vector<WalkerEnemy> Walkers;
+	std::vector<Obstacle> obstacles;
+	std::vector<Pickup> paint;
+
+
+
 
 public:
+
+	std::vector<Entity> getEntities() {
+		return Entities;
+	}
+
+	std::vector<Enemy> getEnemies() {
+		return Enemies;
+	}
+
+	std::vector<WalkerEnemy> getWalkers() {
+		return Walkers;
+	}
+
+	std::vector<Obstacle> getObstacles() {
+		return obstacles;
+	}
+
+	std::vector<Pickup> getPickups() {
+		return paint;
+	}
 
 
 
@@ -25,10 +56,68 @@ public:
 		buildWalls();
 	}
 
+	void deleteRoom() {
+		Entities.clear();
+		Enemies.clear();
+		Walkers.clear();
+		obstacles.clear();
+		paint.clear();
+
+		Entities.shrink_to_fit();
+		Enemies.shrink_to_fit();
+		Walkers.shrink_to_fit();
+		obstacles.shrink_to_fit();
+		paint.shrink_to_fit();
+	}
+
+	Room(RoomEnum roomType) {
+
+		buildWalls();
+
+		if (roomType == ROOM1) {
+			buildRoom1();
+		}
+		else if (roomType == ROOM2) {
+			buildRoom2();
+		}
+		else if (roomType == ROOM3) {
+			buildRoom3();
+		}
+		else if (roomType == ROOM4) {
+			buildRoom4();
+		}
+		else if (roomType == ROOM5) {
+			//buildRoom5();
+		}
+		else if (roomType == ROOM6) {
+			//buildRoom6();
+		}
+		else if (roomType == ROOM7) {
+			//buildRoom7();
+		}
+		else if (roomType == ROOM8) {
+			//buildRoom8();
+		}
+		else if (roomType == ROOM9) {
+			//buildRoom9();
+		}
+		else if (roomType == ROOM10) {
+			//buildRoom10();
+		}
+
+	}
 
 	void drawWalls(sf::RenderWindow& window);
 
 	void buildWalls();
+
+	void buildRoom1();
+
+	void buildRoom2();
+
+	void buildRoom3();
+
+	void buildRoom4();
 
 	virtual ~Room() {
 

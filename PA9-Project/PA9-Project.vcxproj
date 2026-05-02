@@ -29,6 +29,8 @@
     <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Room.hpp" />
+    <ClInclude Include="RoomEnum.hpp" />
+    <ClInclude Include="Splitter.hpp" />
     <ClInclude Include="Trigger.hpp" />
     <ClInclude Include="Walker.hpp" />
   </ItemGroup>
@@ -41,6 +43,7 @@
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="Walker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -66,7 +69,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

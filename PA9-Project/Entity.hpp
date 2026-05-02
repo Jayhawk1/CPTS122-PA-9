@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include"Color.hpp"
 #include <iostream>
-
 #include "EntityList.hpp"
 
 //TODO: Find way to associate entities with their related entityList, currently, Entity has support for this, but cannot find EntityList in any manner.
@@ -13,11 +12,8 @@ protected:
     int entityNum;
     EntityList<Entity>* parentList;
     bool iFrames;
-    int entityNum;
     bool enabled;
-    EntityList<Entity>* parentList;
 public:
-    virtual void update() = 0; 
 
     /*
     Entity() {
@@ -51,23 +47,21 @@ public:
     int getEntityNum() const {
         return this->entityNum;
     }
-    void setEntityNum(int nNum) {
-        this->entityNum = nNum;
-    }
-
-    void setParentList(EntityList<Entity>* nList) {
-        this->parentList = nList;
-    }
 
     void setEnabled(bool nVal);
     bool getEnabled();
 
-    //Takes typeid(class).name()
-    Entity* getNearestEntityOfType(const char* typeName);
-
     virtual ~Entity() {}
 
 	template <typename E>
+    bool CollisionP(E* entity) {
+        if (getShape().getGlobalBounds().findIntersection(entity->getShape().getGlobalBounds())) {
+            std::cout << "Collision detected!" << std::endl;
+            return true;
+        }
+    }
+
+    template <typename E>
     bool Collision(E& entity) {
         if (getShape().getGlobalBounds().findIntersection(entity.getShape().getGlobalBounds())) {
             std::cout << "Collision detected!" << std::endl;
