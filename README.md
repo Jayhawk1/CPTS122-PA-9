@@ -1,12 +1,24 @@
 # About:
 
-Rouge-like dungeon crawler
+Rouge-like dungeon crawler, shoot paint to subdue enemies, painting enemies with a color they are not deals extra damage. move on top of stationary pickups to change your current color
+
+Project Link:
+https://github.com/Jayhawk1/CPTS122-PA-9.git (use branch main-rollback)
+
+Controls:
+- move using W, A, S, and D
+- shoot paint using the arrow keys
+- press Q or esc to pause
+- press R to swap to your other color (you can store up to 2)
+
+Video Demonstration:
+[Link goes here]
 
 By:
 Jayden Winslow - Lab Section 2
 
-Andrew - Lab Section
+Andrew Bailey - Lab Section 12
 
-Kam - Lab Section
+Kamarel Malanda - Lab Section 12
 
-Veli - Lab Section 
+Veli - Lab Section 8
