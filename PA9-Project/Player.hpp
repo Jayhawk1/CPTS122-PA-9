@@ -2,20 +2,33 @@
 #include <SFML/Graphics.hpp>
 #include "Color.hpp"
 #include "Entity.hpp"
-#include "Enemy.hpp"
 #include "Bullet.hpp"
+
+class Enemy;
+class Room;
+class Obstacle;
+class Pickup;
+class Door;
 
 
 class Player : public Entity {
 private:
+    sf::CircleShape shape;
     ColorType color1, color2;
     bool usingFirst;
     float health;
     std::vector<Bullet> projectiles;
     sf::Vector2f playerPos; 
-    float stunTime;
-    sf::Clock playerStunClock;
-    bool isStunned;
+    float stunTime; // Now only for iFrames
+    float strafedisableTime;
+    sf::Clock strafeClock;
+    sf::Clock playerStunClock; // Now for iFrames
+   // bool isStunned;
+    bool isColliding;
+    bool isCollidingUp;
+    bool isCollidingDown;
+    bool isCollidingLeft;
+    bool isCollidingRight;
 
     enum Directon {
         NILL = 0,
@@ -26,7 +39,7 @@ private:
     };
 
     int lastDirection;
-
+    bool isAlive;
 public:
 
     Player() {
@@ -46,7 +59,9 @@ public:
 
         stunTime = 1.0f;
 
-        isStunned = false;
+        strafedisableTime = 0.2f;
+
+        //isStunned = false;
 
         
     }
@@ -57,8 +72,14 @@ public:
 
 
     void draw(sf::RenderWindow& window);
-    void updateProjectiles(Enemy& enemy);
-    void update(Enemy& enemy);
+    void updateProjectiles(Enemy* enemy);
+    void updateProjectiles(std::vector<Obstacle>& obstacles);
+    void update(Enemy* enemy);
+    void update(Room& room);
+    void update(std::vector<Obstacle>& obstacles);
+    void updateProjectiles(EntityList<Enemy>& enemies);
+    void update(Pickup& pickup);
+    void update(Door& nxtDoor);
     void swapColor();
     void newColor(ColorType newColor);
     ColorType getCurrentColor();
@@ -73,15 +94,33 @@ public:
         return playerPos;
 	}
 
+    /*
     void forceStunStop() {
         playerStunClock.stop();
         isStunned = false;
     }
+    */
 
+    bool& getIsAlive() {
+        return isAlive;
+    }
+
+    void setIsAlive(bool tf) {
+        isAlive = tf;
+    }
 
     void setPlayerPos(float newX, float newY) {
         playerPos.x = newX;
         playerPos.y = newY;
+        shape.setPosition({ newX, newY });
     }
    
+    std::vector<Bullet>& getProjectiles() {
+        return projectiles;
+	}
+
+    sf::Shape& getShape() override {
+		return shape;
+    }
+
 };

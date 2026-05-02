@@ -24,11 +24,14 @@ public:
 		mOpen = newOpen;
 	}
 
-	void setIsTransitioning(bool newTransitioning) {
-		mTransitioning = newTransitioning;
+	void setIsColliding(bool TF) {
+		isColliding = TF;
+	}
+
+	bool& getIsColliding(){
+		return isColliding;
 	}
 
 	void startNextLevel();
-
 
 };

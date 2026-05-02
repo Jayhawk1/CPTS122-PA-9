@@ -1,19 +1,10 @@
 #include "Entity.hpp"
 
-Entity::Entity() {
-    this->entityNum = -1;
-    this->parentList = nullptr;
-}
-
 void Entity::draw(sf::RenderWindow& window) {
 
-    window.draw(shape);
+	window.draw(getShape());
 }
 
-sf::CircleShape& Entity::getShape() {
-
-    return shape;
-}
 
 Entity* Entity::getNearestEntityOfType(const char* typeName)
 {
@@ -27,7 +18,7 @@ Entity* Entity::getNearestEntityOfType(const char* typeName)
 			Entity* currEntity = this->parentList->getEntity(i);
 			//std::cout << typeid(*currEntity).name() << std::endl;
 			if (typeid(*currEntity).name() == typeName) {
-				double distLength = (currEntity->shape.getPosition() - this->shape.getPosition()).length();
+				double distLength = (currEntity->getShape().getPosition() - this->getShape().getPosition()).length();
 
 				if (nearestEntity == nullptr || distLength < nearestDist) {
 					//std::cout << "FOUND ENTITY " << distLength << std::endl;
@@ -39,5 +30,8 @@ Entity* Entity::getNearestEntityOfType(const char* typeName)
 
 		return nearestEntity;
 	}
-    return nullptr;
+	return nullptr;
 }
+
+
+
