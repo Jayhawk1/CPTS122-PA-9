@@ -18,10 +18,6 @@ public:
     Enemy(ColorType c, sf::Vector2f pos);
     ~Enemy();
 
-    ~Enemy() {
-
-    }
-
     void update(); //Default behavior for an entity, should apply to every enemy
 
     float getHealth();
