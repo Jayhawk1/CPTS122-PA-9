@@ -9,4 +9,4 @@ Andrew - Lab Section
 
 Kam - Lab Section
 
-Talon - Lab Section 
+Veli - Lab Section 
