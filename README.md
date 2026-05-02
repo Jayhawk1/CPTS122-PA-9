@@ -17,4 +17,4 @@ Andrew Bailey - Lab Section 12
 
 Kam - Lab Section 12
 
-Veli - Lab Section 
+Veli - Lab Section 8
