@@ -84,37 +84,43 @@ void EntityList<ListType>::insertEntity(ListType* nEntity) {
 }
 
 template<class ListType>
-void EntityList<ListType>::removeEntity(ListType& nEntity)
-{
-	if (this == nullptr) {
-		std::cout << "Removing from nonexistent entityList" << std::endl;
-		return;
-	}
-	//if (nEntity) {
-	//	std::cout << "Warning: Tried to remove invalid entity" << std::endl;
-	//}
-	//Remove from entity list
-	int index = nEntity.getEntityNum() - 1;
-	this->entities[index] = nullptr;
+void EntityList<ListType>::removeEntity(ListType& nEntity) {
+    int index = nEntity.getEntityNum() - 1;
+    this->entities[index] = nullptr;
 
-	//Shift all to the left
-	for (int i = index; i < this->entityCount; i++) {
-		this->entities[i] = this->entities[i + 1];
-		this->entities[i + 1] = nullptr;
-	}
-
-	this->entityCount--;
-
-	//std::cout << this << std::endl;
+    // Shift all to the left
+    for (int i = index; i < this->entityCount - 1; i++) {
+        this->entities[i] = this->entities[i + 1];
+        
+        // UPDATE THE ENTITY'S INDEX!
+        if (this->entities[i] != nullptr) {
+            this->entities[i]->setEntityNum(i + 1);
+        }
+    }
+    
+    // Clear the last slot
+    this->entities[this->entityCount - 1] = nullptr;
+    this->entityCount--;
 }
 
 template<class ListType>
-void EntityList<ListType>::removeEntity(int nNum)
-{
-	if (nNum < 0 || nNum > 512) {
-		std::cout << "Warning: Attempted to remove entity in invalid index range: " << nNum << std::endl;
-	}
-	this->removeEntity(*(this->entities[nNum]));
+void EntityList<ListType>::removeEntity(int nNum) {
+    if (nNum < 0 || nNum >= this->entityCount) return;
+
+    // 1. Null out the pointer
+    this->entities[nNum] = nullptr;
+
+    // 2. Shift left and update index numbers
+    for (int i = nNum; i < this->entityCount - 1; i++) {
+        this->entities[i] = this->entities[i + 1];
+        if (this->entities[i] != nullptr) {
+            this->entities[i]->setEntityNum(i + 1); // Fixes the indexing error
+        }
+    }
+
+    // 3. Cleanup
+    this->entities[this->entityCount - 1] = nullptr;
+    this->entityCount--;
 }
 
 template<class ListType>

@@ -2,7 +2,7 @@
 #include "Entity.hpp"
 
 
-class Trigger : public Entity {
+class Trigger : public Obstacle {
 protected:
 	bool mColliding;
 
@@ -10,7 +10,7 @@ public:
 
 	Trigger() {
 		mColliding = false;
-		shape.setFillColor(sf::Color::Transparent);
+		getShape().setFillColor(sf::Color::Transparent);
 	}
 
 	bool getIsColliding() {

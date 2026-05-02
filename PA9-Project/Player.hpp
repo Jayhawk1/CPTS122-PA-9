@@ -12,6 +12,7 @@ class Pickup;
 
 class Player : public Entity {
 private:
+    sf::CircleShape shape;
     ColorType color1, color2;
     bool usingFirst;
     float health;
@@ -71,9 +72,11 @@ public:
 
     void draw(sf::RenderWindow& window);
     void updateProjectiles(Enemy* enemy);
-    void updateProjectiles(Obstacle& obstacle);
+    void updateProjectiles(std::vector<Obstacle>& obstacles);
     void update(Enemy* enemy);
     void update(Room& room);
+    void update(std::vector<Obstacle>& obstacles);
+    void updateProjectiles(EntityList<Enemy>& enemies);
     void update(Pickup& pickup);
     void swapColor();
     void newColor(ColorType newColor);
@@ -104,5 +107,9 @@ public:
     std::vector<Bullet>& getProjectiles() {
         return projectiles;
 	}
+
+    sf::Shape& getShape() override {
+		return shape;
+    }
 
 };

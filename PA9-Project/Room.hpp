@@ -15,7 +15,7 @@ protected:
 	//EntityList<Entity> Entities;
 	//EntityList<Obstacle> obstacles;
 	//EntityList<Pickup> Entities;
-	std::vector<Entity> Entities;
+	std::vector<Entity*> Entities;
 	std::vector<Enemy> Enemies;
 	std::vector<WalkerEnemy> Walkers;
 	std::vector<Obstacle> obstacles;
@@ -26,23 +26,23 @@ protected:
 
 public:
 
-	std::vector<Entity> getEntities() {
-		return Entities;
+	std::vector<Entity*>& getEntities() {
+		return (this->Entities);
 	}
 
-	std::vector<Enemy> getEnemies() {
+	std::vector<Enemy>& getEnemies() {
 		return Enemies;
 	}
 
-	std::vector<WalkerEnemy> getWalkers() {
+	std::vector<WalkerEnemy>& getWalkers() {
 		return Walkers;
 	}
 
-	std::vector<Obstacle> getObstacles() {
+	std::vector<Obstacle>& getObstacles() {
 		return obstacles;
 	}
 
-	std::vector<Pickup> getPickups() {
+	std::vector<Pickup>& getPickups() {
 		return paint;
 	}
 
@@ -146,6 +146,28 @@ public:
 			std::cout << "Collision detected!" << std::endl;
 			return true;
 		}
+	}
+
+
+	bool checkEnemyCollisions(Enemy* e, std::vector<Obstacle>& obstacles) {
+		if (e == nullptr) return false;
+
+		// Use the same math that worked for the player
+		sf::FloatRect eBounds = e->getShape().getGlobalBounds();
+
+		for (Obstacle& wall : obstacles) {
+			sf::FloatRect wBounds = wall.getShape().getGlobalBounds();
+
+			// Perform the AABB overlap check
+			if (eBounds.position.x < wBounds.position.x + wBounds.size.x &&
+				eBounds.position.x + eBounds.size.x > wBounds.position.x &&
+				eBounds.position.y < wBounds.position.y + wBounds.size.y &&
+				eBounds.position.y + eBounds.size.y > wBounds.position.y)
+			{
+				return true; // Hit a wall!
+			}
+		}
+		return false;
 	}
 
 };

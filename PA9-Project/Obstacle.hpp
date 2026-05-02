@@ -8,6 +8,7 @@ protected:
 	sf::Color mFill;
 	sf::Vector2f mSize;
 	sf::RectangleShape mRec;
+	sf::CircleShape shape;
 	int ShapeType;
 	bool isRec;
 
@@ -64,7 +65,10 @@ public:
 
 	}
 
-
+	sf::Shape& getShape() override {
+		if (isRec) return mRec; 
+		return shape;           
+	}
 
 	sf::Vector2f getPosition() {
 		return mPosition;

@@ -7,10 +7,9 @@ public:
 	WalkerEnemy(ColorType c, sf::Vector2f pos)
 	{
 		this->setColor(c);
-
-		shape.setRadius(15.f);
-		shape.setPosition(pos);
-		shape.setFillColor(toSFMLColor(this->getColor()));
+		getCircleShape().setRadius(15.f);
+		getCircleShape().setPosition(pos);
+		getCircleShape().setFillColor(toSFMLColor(this->getColor()));
 	}
 
 	void update(); //The logic for walker in specific

@@ -130,6 +130,40 @@ void Player::update(Room& room) {
 
 }
 
+void Player::update(std::vector<Obstacle>& obstacles) {
+    float speed = 0.2f;
+
+
+    for (Obstacle& wall : obstacles) {
+        if (wall.Collision(*this)) {
+            strafeClock.restart();
+
+            switch (lastDirection) {
+            case UP:
+                shape.move({ 0, speed * 2 });
+                isCollidingUp = true;
+                break;
+            case DOWN:
+                shape.move({ 0, -speed * 2 });
+                isCollidingDown = true;
+                break;
+            case LEFT:
+                shape.move({ speed * 2, 0 });
+                isCollidingLeft = true;
+                break;
+            case RIGHT:
+                shape.move({ -speed * 2, 0 });
+                isCollidingRight = true;
+                break;
+            }
+        }
+    }
+
+
+    updateProjectiles(obstacles);
+
+}
+
 void Player::update(Pickup& pickup) {
     if (Collision(pickup)) {
         newColor(pickup.getColor());
@@ -181,44 +215,91 @@ bool Player::alive() { return health > 0; }
 
 
 void Player::updateProjectiles(Enemy* enemy) {
+    // Single loop over projectiles
+    for (auto it = projectiles.begin(); it != projectiles.end(); ) {
+        // 1. Move the projectile
+        it->update();
 
-    for (auto& b : projectiles) {
-		
-        b.update();
+        // 2. Check collision with the enemy
+        // (Assuming CollisionP takes a pointer, as per your snippet)
+        if (it->CollisionP(enemy)) {
+            // Apply damage
+            enemy->takeDamage(it->getColor(), it->getDamage());
 
-		for (auto it = projectiles.begin(); it != projectiles.end();) {
-            if (b.CollisionP(enemy)) {
-                enemy->takeDamage(b.getColor(), b.getDamage());
-                it = projectiles.erase(it);
-            }
-            else {
-                ++it;
+            // 3. SAFE ERASE: erase() returns the next valid iterator
+            it = projectiles.erase(it);
+        }
+        else {
+            // 4. Only increment if we didn't erase
+            ++it;
+        }
+    }
+}
+
+void Player::updateProjectiles(EntityList<Enemy>& enemies) {
+    // 1. Process Projectile Collisions
+    for (auto it = projectiles.begin(); it != projectiles.end(); ) {
+        it->update();
+        bool hit = false;
+
+        // Check against the list of enemies
+        for (int i = 0; i < enemies.getEntityCount(); i++) {
+            Enemy* e = enemies.getEntity(i);
+            if (e != nullptr && e->getIsAlive() && it->CollisionP(e)) {
+                e->takeDamage(it->getColor(), it->getDamage());
+
+                // If health hits 0, mark the enemy to be removed
+                if (e->getHealth() <= 0) {
+                    e->kill();
+                }
+                hit = true;
+                break;
             }
         }
-       
+
+        if (hit) it = projectiles.erase(it);
+        else ++it;
+    }
+
+    // 2. THE SWEEP: Remove dead enemies from the EntityList
+    // This must happen OUTSIDE the projectile loop
+    for (int i = 0; i < enemies.getEntityCount(); i++) {
+        Enemy* e = enemies.getEntity(i);
+        if (e != nullptr && !e->getIsAlive()) {
+            enemies.removeEntity(i);
+            i--; // Crucial: shift index back after removing
+        }
+    }
+}
+
+
+void Player::updateProjectiles(std::vector<Obstacle>& obstacles) {
+    // Single loop over projectiles
+    for (auto it = projectiles.begin(); it != projectiles.end();) {
+        it->update(); // 1. Update the projectile's position
+
+        bool hitWall = false;
+        // 2. Check collisions for THIS projectile against all walls
+        for (Obstacle& wall : obstacles) {
+            if (wall.Collision(*it)) { // Check the projectile, not 'this'
+                hitWall = true;
+                break; // Stop checking other walls if we hit one
+            }
+        }
+
+        // 3. Remove if it hit a wall
+        if (hitWall) {
+            it = projectiles.erase(it);
+        }
+        else {
+            ++it; // Only increment if we didn't erase
+        }
     }
 }
 
 
 // Add obstacles to vector and periodically run through vector
 
-void Player::updateProjectiles(Obstacle& obstacle) {
-
-    for (auto& b : projectiles) {
-
-        b.update();
-
-        for (auto it = projectiles.begin(); it != projectiles.end();) {
-            if (b.Collision(obstacle)) {
-                it = projectiles.erase(it);
-            }
-            else {
-                ++it;
-            }
-        }
-
-    }
-}
 
 
 

@@ -8,11 +8,13 @@
 
 class Entity {
 protected:
-    sf::CircleShape shape;
     int entityNum;
     EntityList<Entity>* parentList;
     bool iFrames;
     bool enabled;
+    bool isAlive = true;
+
+    
 public:
 
     /*
@@ -21,9 +23,10 @@ public:
         this->parentList = nullptr;
     }
     */
-    virtual void draw(sf::RenderWindow& window);
 
-    sf::CircleShape& getShape();
+    virtual sf::Shape& getShape() = 0;
+
+    virtual void draw(sf::RenderWindow& window);
 
     int getEntityNum() {
         return entityNum;
@@ -53,20 +56,35 @@ public:
 
     virtual ~Entity() {}
 
-	template <typename E>
+    template <typename E>
     bool CollisionP(E* entity) {
-        if (getShape().getGlobalBounds().findIntersection(entity->getShape().getGlobalBounds())) {
-            std::cout << "Collision detected!" << std::endl;
+        // 1. Safety check: Is the pointer itself null?
+        if (!this->getIsAlive()) return false;
+
+        if (entity == nullptr || !entity->getIsAlive()) return false;
+
+        sf::FloatRect r1 = getShape().getGlobalBounds();
+        sf::FloatRect r2 = entity->getShape().getGlobalBounds();
+
+        if (r1.position.x < r2.position.x + r2.size.x &&
+            r1.position.x + r1.size.x > r2.position.x &&
+            r1.position.y < r2.position.y + r2.size.y &&
+            r1.position.y + r1.size.y > r2.position.y)
+        {
             return true;
         }
+        return false;
     }
 
     template <typename E>
     bool Collision(E& entity) {
-        if (getShape().getGlobalBounds().findIntersection(entity.getShape().getGlobalBounds())) {
-            std::cout << "Collision detected!" << std::endl;
-            return true;
-        }
+        sf::FloatRect r1 = getShape().getGlobalBounds();
+        sf::FloatRect r2 = entity.getShape().getGlobalBounds();
+
+        return (r1.position.x < r2.position.x + r2.size.x &&
+            r1.position.x + r1.size.x > r2.position.x &&
+            r1.position.y < r2.position.y + r2.size.y &&
+            r1.position.y + r1.size.y > r2.position.y);
     }
 
     void setIFrames(bool TF) {
@@ -76,4 +94,12 @@ public:
     bool getIFrames() {
         return iFrames;
     }
+
+    void kill() { 
+        isAlive = false; 
+    }
+    bool getIsAlive() const { 
+        return isAlive; 
+    }
+
 };

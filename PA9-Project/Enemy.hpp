@@ -6,6 +6,7 @@
 #include "Entity.hpp"
 #include "Color.hpp"
 #include "Player.hpp"
+#include "Obstacle.hpp"
 
 class Enemy : public Entity {
 private:
@@ -13,12 +14,14 @@ private:
     float health;
     float moveSpeed;
     sf::Vector2f velocity;
+    sf::CircleShape shape;
 public:
     Enemy();
     Enemy(ColorType c, sf::Vector2f pos);
     ~Enemy();
 
     void update(); //Default behavior for an entity, should apply to every enemy
+    void Colupdate(std::vector<Obstacle>& obstacles);
 
     float getHealth();
     void setHealth(float nHealth); //Directly set health for whatever purpose
@@ -29,10 +32,25 @@ public:
     void setMoveSpeed(float nSpeed);
     float getMoveSpeed();
 
-    void setVelocity(sf::Vector2f nVel);
-    sf::Vector2f getVelocity();
 
     ColorType getColor();
     void setColor(ColorType nColor);
     bool alive();
+
+    sf::Vector2f getVelocity() {
+        return velocity;
+    }
+
+    void setVelocity(float dirx, float diry) {
+        velocity.x = dirx;
+        velocity.y = diry;
+    }
+
+    sf::Shape& getShape() override {
+        return shape;
+    }
+
+    sf::CircleShape& getCircleShape() {
+        return shape;
+	}
 };

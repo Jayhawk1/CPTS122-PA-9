@@ -10,11 +10,17 @@ private:
     float dmg;
     sf::Vector2f bulletPos;
     float speed;
+    sf::CircleShape shape;
+
 
 public:
     Bullet(ColorType c, sf::Vector2f dir, ColorType playerColor, ColorType enemyColor, sf::Vector2f PlayerPos);
 
     void update();
+
+    sf::Shape& getShape() override {
+		return shape;
+    }
 
     ColorType getColor();
 
