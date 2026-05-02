@@ -1,8 +1,7 @@
 #pragma once
 #include "Entity.hpp"
 
-
-class Obstacle : protected Entity {
+class Obstacle : public Entity {
 protected:
 	sf::Vector2f mPosition;
 	sf::Color mOutline;
@@ -185,7 +184,6 @@ public:
 	sf::RectangleShape& returnRec() {
 		return mRec;
 	}
-
 
 
 };

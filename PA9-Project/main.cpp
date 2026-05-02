@@ -12,18 +12,19 @@ int main() {
     EntityList<Entity> Entities = EntityList<Entity>();
 
     sf::RenderWindow window(sf::VideoMode({ 1280, 720 }), "Game");
-
+    Pickup paint(RED, { 700, 500 });
+    Pickup paint1(YELLOW, { 200, 600 });
     Player player;
     bool shot = false;
-    Room testRoom(2, 10, 10, 800, 50, sf::Color::White, sf::Color::White);
+    // Obstacle(int mShape, float posX, float posY, float sizeX, float sizeY, sf::Color outline, sf::Color fill)
+    Room testRoom;
 
     WalkerEnemy enemy(BLUE, { 300, 200 });
 
     Entities.insertEntity(player);
     Entities.insertEntity(enemy);
 
-    Pickup paint(RED, { 700, 500 });
-    Pickup paint1(YELLOW, { 200, 600 });
+
 
     while (window.isOpen()) {
 
@@ -49,6 +50,8 @@ int main() {
 
         player.update(enemy); // Current passthrough allows check for Collision
         player.update(testRoom);
+        player.update(paint);
+		player.update(paint1);
         enemy.update();
 
         for (int i = 0; i < Entities.getEntityCount(); i++) {
@@ -66,11 +69,11 @@ int main() {
 
 
             */
-
+/*
         if(player.Collision(paint)) {
             player.newColor(paint.getColor());
         }
-
+        */
 
 
 

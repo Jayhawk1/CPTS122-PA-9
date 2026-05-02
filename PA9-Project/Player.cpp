@@ -58,6 +58,7 @@ void Player::update(Enemy& enemy) {
 
     if (Collision(enemy) && lastDirection == NILL && !iFrames) {
         takeDamage(enemy.getColor());
+        playerStunClock.restart();
         iFrames = true;
        // isStunned = true;
     }
@@ -91,7 +92,7 @@ void Player::update(Enemy& enemy) {
         */
 	}
 
-
+    
 
 
     updateProjectiles(enemy);
@@ -123,6 +124,13 @@ void Player::update(Room& room) {
             }
         }
 
+}
+
+void Player::update(Pickup& pickup) {
+    if (Collision(pickup)) {
+        newColor(pickup.getColor());
+
+    }
 }
 
 void Player::swapColor() {
@@ -186,6 +194,29 @@ void Player::updateProjectiles(Enemy& enemy) {
        
     }
 }
+
+
+// Add obstacles to vector and periodically run through vector
+
+void Player::updateProjectiles(Obstacle& obstacle) {
+
+    for (auto& b : projectiles) {
+
+        b.update();
+
+        for (auto it = projectiles.begin(); it != projectiles.end();) {
+            if (b.Collision(obstacle)) {
+                it = projectiles.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+
+    }
+}
+
+
 
 
 

@@ -15,4 +15,17 @@ public:
 
     ColorType getColor();
     sf::CircleShape& getShape();
+
+    void setColor(ColorType color) {
+        this->color = color;
+		shape.setFillColor(toSFMLColor(color));
+    }
+
+    void setShape(sf::CircleShape shape) {
+        this->shape = shape;
+    }
+
+	~Pickup() {
+    }
+
 };

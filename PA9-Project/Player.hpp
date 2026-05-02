@@ -68,8 +68,10 @@ public:
 
     void draw(sf::RenderWindow& window);
     void updateProjectiles(Enemy& enemy);
+    void updateProjectiles(Obstacle& obstacle);
     void update(Enemy& enemy);
     void update(Room& room);
+    void update(Pickup& pickup);
     void swapColor();
     void newColor(ColorType newColor);
     ColorType getCurrentColor();
@@ -96,4 +98,8 @@ public:
         playerPos.y = newY;
     }
    
+    std::vector<Bullet>& getProjectiles() {
+        return projectiles;
+	}
+
 };

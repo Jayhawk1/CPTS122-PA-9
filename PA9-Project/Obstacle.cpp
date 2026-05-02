@@ -10,3 +10,4 @@ void Obstacle::draw(sf::RenderWindow& window, const bool& isRec) {
         window.draw(shape);
     }
 }
+
