@@ -11,7 +11,7 @@ Controls:
 - press R to swap to your other color (you can store up to 2)
 
 Video Demonstration:
-[Link goes here]
+[[Youtube](https://youtu.be/VHg2VQOw6zo)
 
 By:
 Jayden Winslow - Lab Section 2
