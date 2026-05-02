@@ -1,6 +1,14 @@
 # About:
+Rouge-like dungeon crawler, shoot paint to subdue enemies, painting enemies with a color they are not deals extra damage. move on top of stationary pickups to change your current color
 
-Rouge-like dungeon crawler
+Controls:
+- move using W, A, S, and D
+- shoot using the arrow keys
+- press Q or esc to pause
+- press R to swap to your other color (you can store up to 2)
+
+Video Demonstration:
+[Link goes here]
 
 By:
 Jayden Winslow - Lab Section 2
