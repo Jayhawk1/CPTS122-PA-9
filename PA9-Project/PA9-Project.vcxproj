@@ -24,6 +24,7 @@
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="EntityList.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="Pickup.hpp" />
     <ClInclude Include="Player.hpp" />
@@ -34,9 +35,11 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Walker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
